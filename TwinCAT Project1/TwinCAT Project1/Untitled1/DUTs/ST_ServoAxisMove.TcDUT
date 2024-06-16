@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ServoAxisMove" Id="{0780d237-aa31-4a36-9893-1a91f311c031}">
+    <Declaration><![CDATA[TYPE ST_ServoAxisMove :
+STRUCT
+	MotionType : E_ServoTypeMoves;
+	Position : LREAL;
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -25,6 +25,8 @@ VAR
 	Deceleration: LREAL;
 	jerk: LREAL;
 	
+	ServoAxisMove : ST_ServoAxisMove;
+	
 	//Commands
 	Reset_Command   : BOOL;
 	Move_Abs_Command  : BOOL;
@@ -172,6 +174,27 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Move" Id="{1b1758bd-f1b3-469b-ad89-131305a562c1}">
+      <Declaration><![CDATA[METHOD M_Move : BOOL
+VAR_INPUT
+	ServoAxisMove : ST_ServoAxisMove;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.Position := ServoAxisMove.Position;
+THIS^.Velocity := ServoAxisMove.Velocity;
+THIS^.Acceleration := ServoAxisMove.Acceleration;
+THIS^.Deceleration:= ServoAxisMove.Deceleration;
+THIS^.jerk:= ServoAxisMove.jerk;  
+
+
+IF (ServoAxisMove.MotionType = E_ServoTypeMoves.AbsoluteMove) THEN 
+	Move_Abs_Command := TRUE;
+ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.RelativeMove) THEN 
+	Move_Rel_Command := TRUE;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_MoveAbsolute" Id="{c5d595c3-604a-4ace-a856-8edfbb1a47c3}">
@@ -365,6 +388,14 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_Move">
+      <LineId Id="12" Count="3" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_MoveAbsolute">
       <LineId Id="22" Count="5" />

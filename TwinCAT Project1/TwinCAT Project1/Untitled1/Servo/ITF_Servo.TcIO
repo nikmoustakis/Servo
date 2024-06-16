@@ -15,6 +15,12 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="M_Move" Id="{226d8843-20bd-47da-a11c-aa61e3729108}">
+      <Declaration><![CDATA[METHOD M_Move : BOOL
+VAR_INPUT
+	ServoAxisMove : ST_ServoAxisMove;
+END_VAR]]></Declaration>
+    </Method>
     <Method Name="M_MoveAbsolute" Id="{429c784e-f457-4506-9234-4079523c7ee5}">
       <Declaration><![CDATA[METHOD M_MoveAbsolute
 
