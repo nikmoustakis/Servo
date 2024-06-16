@@ -11,6 +11,9 @@ VAR
 	MoveAbsolute  : MC_MoveAbsolute;
 	Move_Relative : MC_MoveRelative;
 	Reset         : MC_Reset;
+	ReadStatus    : MC_READSTATUS;
+	
+	Status         : ST_AxisStatus;
 	
 	Axis          : Axis_REF;
 	Interlock     : ST_ServoInterlocks;
@@ -22,12 +25,17 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[ReadStatus(Axis := Axis, Enable := TRUE);
+
+Status := ReadStatus.Status;
+
+
 Power(Axis := Axis, 
 		Enable := Interlock.SafetyOk, 
 		Enable_Positive := Interlock.Move_Positive, 
 		Enable_Negative := Interlock.Move_Negative,
 		Override := 100);
+
 
 
 IF Reset.Done THEN 
@@ -167,9 +175,12 @@ END_VAR
       </Get>
     </Property>
     <LineIds Name="FB_Servo">
+      <LineId Id="36" Count="1" />
+      <LineId Id="41" Count="1" />
       <LineId Id="16" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="30" Count="3" />
+      <LineId Id="35" Count="0" />
       <LineId Id="20" Count="1" />
       <LineId Id="19" Count="0" />
       <LineId Id="26" Count="1" />

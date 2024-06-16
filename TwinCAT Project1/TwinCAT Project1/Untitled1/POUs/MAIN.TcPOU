@@ -25,6 +25,17 @@ Servo.P_Interlock.Move_Negative := InterlocksOk;
 Servo.P_Interlock.Move_Positive := InterlocksOk;
 Servo.P_Interlock.SafetyOk := InterlocksOk;
 
+
+
+IF GoPos THEN 
+	Servo.M_MoveRelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+END_IF
+
+Servo.Status.StandStill;
+Servo.Status.Moving;
+Servo.Status.Error;
+Servo.Status.ErrorID;
+
 Servo.Axis.Status.Operational;
 
 ]]></ST>
@@ -33,6 +44,12 @@ Servo.Axis.Status.Operational;
       <LineId Id="19" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="20" Count="2" />
+      <LineId Id="29" Count="2" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="2" />
       <LineId Id="26" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="27" Count="0" />
