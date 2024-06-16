@@ -23,7 +23,11 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-Power(Axis := Axis, Enable := Interlock.SafetyOk, Enable_Positive := Interlock.Move_Positive, Enable_Negative := Interlock.Move_Negative);
+Power(Axis := Axis, 
+		Enable := Interlock.SafetyOk, 
+		Enable_Positive := Interlock.Move_Positive, 
+		Enable_Negative := Interlock.Move_Negative,
+		Override := 100);
 
 
 IF Reset.Done THEN 
@@ -34,6 +38,15 @@ END_IF
     </Implementation>
     <Method Name="M_GearInDyn" Id="{7f53a7c1-64aa-4e18-b4bf-f2023647c23d}">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}">
+      <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -156,6 +169,7 @@ END_VAR
     <LineIds Name="FB_Servo">
       <LineId Id="16" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="30" Count="3" />
       <LineId Id="20" Count="1" />
       <LineId Id="19" Count="0" />
       <LineId Id="26" Count="1" />
@@ -163,6 +177,9 @@ END_VAR
       <LineId Id="28" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_GearInDyn">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_MoveAbsolute">

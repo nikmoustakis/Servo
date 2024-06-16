@@ -21,12 +21,22 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 Servo();
-Servo.P_Interlock.]]></ST>
+Servo.P_Interlock.Move_Negative := InterlocksOk;
+Servo.P_Interlock.Move_Positive := InterlocksOk;
+Servo.P_Interlock.SafetyOk := InterlocksOk;
+
+Servo.Axis.Status.Operational;
+
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="19" Count="0" />
       <LineId Id="2" Count="0" />
-      <LineId Id="20" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="23" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

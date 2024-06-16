@@ -18,13 +18,24 @@ END_VAR
     <Method Name="M_MoveAbsolute" Id="{429c784e-f457-4506-9234-4079523c7ee5}">
       <Declaration><![CDATA[METHOD M_MoveAbsolute
 
+VAR_INPUT
+	Position : LREAL;
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_MoveRelative" Id="{e845dee4-4d40-413f-bcb4-d287e997a278}">
       <Declaration><![CDATA[METHOD M_MoveRelative : BOOL
 VAR_INPUT
-END_VAR
-]]></Declaration>
+	Position : LREAL;
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR]]></Declaration>
     </Method>
     <Method Name="M_MoveVelocity" Id="{a40c83ca-f09c-4283-97a3-42e602271c37}">
       <Declaration><![CDATA[METHOD M_MoveVelocity
@@ -43,7 +54,7 @@ END_VAR
       </Get>
     </Property>
     <Property Name="P_Interlock" Id="{119e78ee-44f2-40f9-a099-d70ba6f76966}">
-      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO Interlock]]></Declaration>
+      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
       <Get Name="Get" Id="{9098c892-eeba-4732-9c51-faa13b8e1889}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

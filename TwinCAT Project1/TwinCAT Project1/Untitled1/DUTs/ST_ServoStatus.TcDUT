@@ -4,7 +4,7 @@
     <Declaration><![CDATA[TYPE ST_ServoStatus :
 STRUCT
 	
-	Status : AXIS_REF.Status;
+	//Status : AXIS_REF.Status;
 
 END_STRUCT
 END_TYPE
