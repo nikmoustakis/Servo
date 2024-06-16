@@ -47,6 +47,13 @@ END_VAR]]></Declaration>
 
 ]]></Declaration>
     </Method>
+    <Method Name="M_ServoInTargetPos" Id="{6f116aa2-57a7-4089-b3d7-2e6ef473c556}">
+      <Declaration><![CDATA[METHOD M_ServoInTargetPos : BOOL
+VAR_INPUT
+	Precision : LREAL;
+END_VAR
+]]></Declaration>
+    </Method>
     <Property Name="P_Axis" Id="{f48d8ef1-e81c-458b-ade5-e5f03cc5bb0c}">
       <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{359262dd-e211-447e-8d41-6132423bcc73}">

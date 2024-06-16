@@ -12,6 +12,10 @@ VAR
 	Reset : BOOL;
 	GoPos : BOOL;
 	
+	goposrel : BOOL;
+	
+	RESET_CMD : BOOL;
+	
 	Pos : LREAL;
 	Vel : LREAL := 100;
 	Acc : LREAL := 1000;
@@ -28,10 +32,25 @@ Servo.P_Interlock.SafetyOk := InterlocksOk;
 
 
 IF GoPos THEN 
-	Servo.M_MoveRelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	GoPos := FALSE;
+	
+
+END_IF
+
+IF GoPosrel THEN 
+	Servo.M_Moverelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	GoPosrel := FALSE;
+	
+END_IF
+
+IF Reset_cmd THEN 
+	Servo.M_Reset();
+	rESET_Cmd := FALSE;
 END_IF
 
 Servo.Status.StandStill;
+Servo.Axis.NcToPlc.ActPos;
 Servo.Status.Moving;
 Servo.Status.Error;
 Servo.Status.ErrorID;
@@ -46,9 +65,19 @@ Servo.Axis.Status.Operational;
       <LineId Id="20" Count="2" />
       <LineId Id="29" Count="2" />
       <LineId Id="28" Count="0" />
-      <LineId Id="32" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="41" Count="2" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="47" Count="4" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="58" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="34" Count="0" />
+      <LineId Id="39" Count="0" />
       <LineId Id="36" Count="2" />
       <LineId Id="26" Count="0" />
       <LineId Id="25" Count="0" />
