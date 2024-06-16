@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="Param_PermIntlk" Id="{76004382-e11e-475a-a489-b74edd42fb74}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'global_init_slot := '49990'}
+VAR_GLOBAL CONSTANT
+	ARRAY_SIZE : USINT := 16;
+	DESCRIPTION_LEN : USINT := 40;
+	MESSAGE_LEN : USINT := 127;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

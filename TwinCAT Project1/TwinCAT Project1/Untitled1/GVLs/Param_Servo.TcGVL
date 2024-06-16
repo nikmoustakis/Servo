@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="Param_Servo" Id="{96dd3f82-34ad-42db-b60f-e0ec9e701401}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	BRANCH_ARRAY_SIZE : USINT := 16;
+	DESCRIPTION_LEN : USINT := 40;
+	MESSAGE_LEN : UDINT := 255;
+	TIMEOUT_LABEL : STRING(Param_Error.LABEL_LEN) := 'Step Timeout';
+	TIMEOUT_PRIORITY : E_ErrorPriority := E_ErrorPriority.HIGH;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

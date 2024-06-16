@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ServoInterlocks" Id="{07679274-de7f-4bf4-ac09-4ebdcd9540a1}">
+    <Declaration><![CDATA[TYPE ST_ServoInterlocks :
+STRUCT
+	Move_Positive : BOOL;
+	Move_Negative : BOOL;
+	SafetyOk     : BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

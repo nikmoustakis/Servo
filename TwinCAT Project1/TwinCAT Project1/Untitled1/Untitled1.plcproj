@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{e6812467-ea88-4743-be0c-fd8a2034af69}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>Untitled1</Name>
+    <ProgramVersion>3.1.4024.0</ProgramVersion>
+    <Application>{c5b796b5-707d-41fd-9b7c-e65623bfa43b}</Application>
+    <TypeSystem>{6e1945ce-ef03-4908-b71f-411c4581997c}</TypeSystem>
+    <Implicit_Task_Info>{2e7fc96e-c035-47b6-b7aa-ad62f7490c06}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{b425a72c-6e0b-424a-8177-f66366cafee2}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{1a36d96f-6c8e-46ce-b55d-fb2c90a96575}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{bbaf044d-9a65-403c-9427-1f34f96172db}</LibraryReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="DUTs\ST_ServoInterlocks.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_ServoStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_ServoConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_ServoMove.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Error\DUTs\E_ErrorPriority.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Error\DUTs\ST_Error.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Error\GVLs\Param_Error.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="Error\POUs\F_ClearError.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Error\POUs\F_ResetErrorList.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\Param_Servo.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="PermIntlk\PermIntlk\FB_PermIntlk.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PermIntlk\PermIntlk\GVL_PermIntlk.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="PermIntlk\PermIntlk\ITF_PermIntlk.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PermIntlk\PermIntlk\Param_PermIntlk.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="PermIntlk\PermIntlk\ST_PermIntlkIndex.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\FB_Servo.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\ITF_Servo.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DUTs" />
+    <Folder Include="Error" />
+    <Folder Include="Error\DUTs" />
+    <Folder Include="Error\GVLs" />
+    <Folder Include="Error\POUs" />
+    <Folder Include="GVLs" />
+    <Folder Include="Servo" />
+    <Folder Include="PermIntlk" />
+    <Folder Include="PermIntlk\PermIntlk" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="Tc2_MC2">
+      <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Untitled1.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" />
+      <d n="Values" t="Hashtable" />
+    </o>
+  </Data>
+  <TypeList>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

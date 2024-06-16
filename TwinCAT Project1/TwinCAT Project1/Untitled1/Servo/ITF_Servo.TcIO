@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="ITF_Servo" Id="{9f4cb64f-ee48-4fe2-8df5-60370a9d528f}">
+    <Declaration><![CDATA[INTERFACE ITF_Servo
+]]></Declaration>
+    <Method Name="M_GearInDyn" Id="{f0856113-0399-4969-9fe9-f0c401329ef1}">
+      <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_Home" Id="{c52db2e8-1431-4f43-b4bf-e0e5d12b988f}">
+      <Declaration><![CDATA[METHOD M_Home : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_MoveAbsolute" Id="{429c784e-f457-4506-9234-4079523c7ee5}">
+      <Declaration><![CDATA[METHOD M_MoveAbsolute
+
+]]></Declaration>
+    </Method>
+    <Method Name="M_MoveRelative" Id="{e845dee4-4d40-413f-bcb4-d287e997a278}">
+      <Declaration><![CDATA[METHOD M_MoveRelative : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_MoveVelocity" Id="{a40c83ca-f09c-4283-97a3-42e602271c37}">
+      <Declaration><![CDATA[METHOD M_MoveVelocity
+
+]]></Declaration>
+    </Method>
+    <Method Name="M_Reset" Id="{caf815d4-5543-4773-bd0f-b83b9282d109}">
+      <Declaration><![CDATA[METHOD M_Reset : BOOL
+
+]]></Declaration>
+    </Method>
+    <Property Name="P_Axis" Id="{f48d8ef1-e81c-458b-ade5-e5f03cc5bb0c}">
+      <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO AXIS_REF]]></Declaration>
+      <Get Name="Get" Id="{359262dd-e211-447e-8d41-6132423bcc73}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_Interlock" Id="{119e78ee-44f2-40f9-a099-d70ba6f76966}">
+      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO Interlock]]></Declaration>
+      <Get Name="Get" Id="{9098c892-eeba-4732-9c51-faa13b8e1889}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_ServoConfiguration" Id="{c9b4820d-12d6-4620-8f9f-a8fdff887ca3}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_ServoConfiguration : REFERENCE TO ST_ServoConfiguration]]></Declaration>
+      <Get Name="Get" Id="{75fd9b35-bc46-4fe7-a4bd-6325babebd0c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{1273a58f-2dc7-49b5-9bc7-d2673b6ff7e9}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_Status : REFERENCE TO ST_ServoStatus]]></Declaration>
+      <Get Name="Get" Id="{e7be9fd5-9f06-4e41-b17d-6b1d35c70798}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

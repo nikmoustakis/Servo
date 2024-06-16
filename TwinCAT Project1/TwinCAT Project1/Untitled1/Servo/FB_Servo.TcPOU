@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Servo" Id="{a9b0bc75-5c35-4985-b9cb-a8697ca3dc67}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Servo IMPLEMENTS ITF_Servo
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	Power         : MC_POWER;
+	MoveAbsolute  : MC_MoveAbsolute;
+	Move_Relative : MC_MoveRelative;
+	Reset         : MC_Reset;
+	
+	Axis          : Axis_REF;
+	Interlock     : ST_ServoInterlocks;
+	ServoConfiguration : ST_ServoConfiguration;
+	
+	//Commands
+	Reset_Command : BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+Power(Axis := Axis, Enable := Interlock.SafetyOk, Enable_Positive := Interlock.Move_Positive, Enable_Negative := Interlock.Move_Negative);
+
+
+IF Reset.Done THEN 
+	Reset(Axis := Axis,Execute := FALSE);
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="M_GearInDyn" Id="{7f53a7c1-64aa-4e18-b4bf-f2023647c23d}">
+      <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_MoveAbsolute" Id="{c5d595c3-604a-4ace-a856-8edfbb1a47c3}">
+      <Declaration><![CDATA[METHOD M_MoveAbsolute
+
+VAR_INPUT
+	Position : LREAL;
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF Power.Status AND Axis.Status.Operational AND Axis.Status.StandStill THEN 
+	MoveAbsolute(Axis := Axis,
+	Position := Position, 
+	Velocity := Velocity, 
+	Acceleration := Acceleration,
+	Deceleration := Deceleration,
+	jerk:= Jerk);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_MoveRelative" Id="{f48b3cca-c5f2-4c73-9e2e-c8c3fb1b9b68}">
+      <Declaration><![CDATA[METHOD M_MoveRelative : BOOL
+
+VAR_INPUT
+	Position : LREAL;
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF Power.Status AND Axis.Status.Operational AND Axis.Status.StandStill THEN 
+	MoveAbsolute(Axis := Axis,
+	Position := Position, 
+	Velocity := Velocity, 
+	Acceleration := Acceleration,
+	Deceleration := Deceleration,
+	jerk:= Jerk);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_MoveVelocity" Id="{13ce1d10-c5ed-4966-b74b-fbd2d6e043fc}">
+      <Declaration><![CDATA[METHOD M_MoveVelocity
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Reset" Id="{5489ebc0-401e-45be-88dd-ca97434e5c0c}">
+      <Declaration><![CDATA[METHOD M_Reset : BOOL
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+Reset_Command := TRUE;
+
+Reset(Axis := Axis, Execute := Reset_Command);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Axis" Id="{44d9c3e2-7658-4434-a9d6-2ffaaabef781}">
+      <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO AXIS_REF]]></Declaration>
+      <Get Name="Get" Id="{6c6f9f9e-1088-479d-acae-6038779f8d6a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Axis REF= Axis;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Interlock" Id="{b3fa0a65-d5ac-4046-8889-1c58225764a2}">
+      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
+      <Get Name="Get" Id="{478cde43-792e-4109-8177-e24dafa2cddd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Interlock REF= Interlock;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_ServoConfiguration" Id="{89be2535-ea79-46a9-a08b-49598bb78a70}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_ServoConfiguration : REFERENCE TO ST_ServoConfiguration]]></Declaration>
+      <Get Name="Get" Id="{922c2abd-c30f-4ea7-a3a2-cbf3c55919c4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_ServoConfiguration REF= ServoConfiguration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{283de251-f33b-471c-ac47-084507ccff39}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_Status : REFERENCE TO ST_ServoStatus]]></Declaration>
+      <Get Name="Get" Id="{84ec4f21-ab55-4d24-8893-655d005e00fd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_Servo">
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_GearInDyn">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_MoveAbsolute">
+      <LineId Id="7" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_MoveRelative">
+      <LineId Id="13" Count="7" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_MoveVelocity">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_Reset">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_Axis.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_Interlock.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_ServoConfiguration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

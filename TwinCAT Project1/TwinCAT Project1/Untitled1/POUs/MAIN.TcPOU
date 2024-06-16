@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{7058af0c-c368-4ceb-9782-8c3da4713ce0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	Servo : FB_Servo;
+	
+	
+	
+	InterlocksOk : BOOL;
+	
+	Reset : BOOL;
+	GoPos : BOOL;
+	
+	Pos : LREAL;
+	Vel : LREAL := 100;
+	Acc : LREAL := 1000;
+	Jerk : LREAL := 10000;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+Servo();
+Servo.P_Interlock.]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="19" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

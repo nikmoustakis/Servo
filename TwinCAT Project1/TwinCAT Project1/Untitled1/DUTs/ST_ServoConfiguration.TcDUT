@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ServoConfiguration" Id="{86d51f47-bdaf-491d-9d49-b6e86eb9be0b}">
+    <Declaration><![CDATA[TYPE ST_ServoConfiguration :
+STRUCT
+	Name : STRING(Param_Servo.DESCRIPTION_LEN) := 'Servo'; //Name visualized on UI
+	AdvanceFeedback_Used : BOOL;      //TRUE if advanced state feedback is used  
+	RetractFeedback_Used  : BOOL;      //TRUE if retracted state feedback is used  
+	AdvanceFeedbackTimeoutError : TIME; // How long we wait to see advanced feedback before we raise timeout error; 0 if not used
+	RetractFeedbackTimeoutError : TIME; // How long we wait to see retracted feedback before we raise timeout error; 0 if not used
+	SimFeedback_Advance_TimeElapsed : TIME; //If we do not use Advanced Feedback, serves as simulation delay after Advance Output is Set
+	SimFeedback_Retract_TimeElapsed : TIME; //If we do not use Retracted Feedback, serves as simulation delay after Advance Output is Set
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

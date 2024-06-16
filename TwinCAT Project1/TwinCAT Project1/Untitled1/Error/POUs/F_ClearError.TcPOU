@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_ClearError" Id="{a8ff4cbd-6e27-46d1-854a-76e8fce49f6b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ClearError 
+VAR_INPUT
+	Error : REFERENCE TO ST_Error;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF __ISVALIDREF(Error) THEN 
+	Error.Active := FALSE;
+	Error.Label := '';
+	Error.Message := '';
+	Error.Priority := E_ErrorPriority.Diagnostic;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="F_ClearError">
+      <LineId Id="7" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="2" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PermIntlk" Id="{7fbe70ee-def1-4ef4-a2f4-adfb5314a214}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PermIntlk IMPLEMENTS ITF_PermIntlk
+
+VAR
+	Name : STRING(Param_PermIntlk.DESCRIPTION_LEN) := 'Permintlk Name';
+	Indices : ARRAY[0..(Param_Permintlk.ARRAY_SIZE-1)] OF ST_PermintlkIndex;
+	OK : BOOL;
+	Message : STRING(Param_PermIntlk.MESSAGE_LEN);
+	
+	i : USINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[OK := TRUE;
+Message := '';
+
+FOR i :=0 TO (Param_Permintlk.ARRAY_SIZE-1) BY 1 DO 
+	IF NOT Indices[i].Condition THEN 
+		OK := FALSE;
+		IF Message = '' THEN 
+			Message := Indices[i].Description;
+		ELSE
+			Message := CONCAT(CONCAT(Message, ', '),Indices[i].Description);
+		END_IF
+	END_IF
+END_FOR]]></ST>
+    </Implementation>
+    <Method Name="M_ClearAll" Id="{d115b53e-f94d-4dec-8388-59937bb614cc}">
+      <Declaration><![CDATA[METHOD M_ClearAll : BOOL
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Indices := GVL_PermIntlk.EMPTY_INDICES;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Set" Id="{7d39734a-b77d-4e1a-af5a-41170fe7c770}">
+      <Declaration><![CDATA[METHOD M_Set : BOOL
+VAR_INPUT
+	Index : USINT;
+	Description : STRING(Param_PermIntlk.DESCRIPTION_LEN);
+	Condition : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Index < Param_PermIntlk.ARRAY_SIZE THEN 
+	Indices[Index].Description := Description;
+	Indices[Index].Condition := Condition;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Message" Id="{a87c0be6-f9f8-4fc8-b475-8b8de6405e63}">
+      <Declaration><![CDATA[PROPERTY P_Message : STRING(Param_PermIntlk.MESSAGE_LEn)]]></Declaration>
+      <Get Name="Get" Id="{005e5e77-3125-48b3-a65f-71059b1a0c7d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Message := Message;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Name" Id="{7743aa23-0f8d-48f4-9584-ccc9f937659b}">
+      <Declaration><![CDATA[PROPERTY P_Name : STRING(Param_PermIntlk.DESCRIPTION_LEN)]]></Declaration>
+      <Get Name="Get" Id="{cb923d9d-cb30-461f-b781-8320b7a3e8a5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Name := Name;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{14c49975-ea7a-4e0f-8ff9-170b1d6371d5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Name := P_Name;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="P_OK" Id="{4637f6fe-e1fe-4b37-b0dd-50385ae7316a}">
+      <Declaration><![CDATA[PROPERTY P_OK : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c76fb3a1-23ff-489d-aa12-d938482f1a72}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_OK := OK;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_PermIntlk">
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.M_ClearAll">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.M_Set">
+      <LineId Id="8" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.P_Message.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.P_Name.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.P_Name.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PermIntlk.P_OK.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

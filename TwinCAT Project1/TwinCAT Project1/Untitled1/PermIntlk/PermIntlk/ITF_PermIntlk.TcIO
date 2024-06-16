@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="ITF_PermIntlk" Id="{808cb769-50b2-4753-825b-e3adf2f77e6e}">
+    <Declaration><![CDATA[INTERFACE ITF_PermIntlk
+]]></Declaration>
+    <Method Name="M_ClearAll" Id="{94bc9164-f7c1-4288-b476-e04b7a0a767e}">
+      <Declaration><![CDATA[METHOD M_ClearAll : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_Set" Id="{e6acc818-3bf7-4d05-b293-d1ed2ae8d5a7}">
+      <Declaration><![CDATA[METHOD M_Set : BOOL
+VAR_INPUT
+	Index : USINT;
+	Description : STRING(Param_PermIntlk.DESCRIPTION_LEN);
+	Condition : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="P_Message" Id="{bc3cb8af-b25d-4d3b-84af-ff6627125825}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY P_Message : STRING(Param_PermIntlk.MESSAGE_LEn)]]></Declaration>
+      <Get Name="Get" Id="{58059d9a-3d13-45b7-8639-e88bdc6bdf36}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_Name" Id="{a15e9f9e-c9d7-4df7-9776-063187745e2e}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY P_Name : STRING(Param_PermIntlk.DESCRIPTION_LEN)]]></Declaration>
+      <Get Name="Get" Id="{0578e88e-aec8-40a1-a3a4-ed5f9a77845b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{af234963-eb6f-426a-bd14-bdf2e3174bb1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="P_OK" Id="{cdebdc09-6178-429c-bcf5-aa4b162a91ac}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY P_OK : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9e31391a-a22a-4e54-b0b3-dd0c4ab3ad15}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>
