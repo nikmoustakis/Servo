@@ -92,10 +92,14 @@ ELSIF Move_Abs_CommaND AND MoveAbsolute.Done THEN
 	Move_Abs_CommaND := FALSE;
 	MoveAbsolute(Axis := Axis,
 	Execute := FALSE);
-ELSIF MoveAbsolute.Error OR Axis.Status.Error THEN 
+ELSIF Move_Abs_CommaND AND MoveAbsolute.Error OR Axis.Status.Error THEN 
 	Move_Abs_CommaND := FALSE;
 	MoveAbsolute(Axis := Axis,
 	Execute := FALSE);
+END_IF
+
+IF Move_Abs_CommaND AND NOT Interlock.SafetyOk THEN 
+	Move_Abs_CommaND := FALSE;
 END_IF]]></ST>
       </Implementation>
     </Method>
@@ -117,10 +121,15 @@ ELSIF Move_rel_CommaND AND Move_Relative.Done THEN
 	Move_rel_CommaND := FALSE;
 	Move_Relative(Axis := Axis,
 	Execute := FALSE);
-ELSIF Move_Relative.Error OR Axis.Status.Error THEN 
+ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
 	Move_rel_CommaND := FALSE;
 	Move_Relative(Axis := Axis,
 	Execute := FALSE);
+
+END_IF
+
+IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
+	Move_rel_CommaND := FALSE;
 END_IF]]></ST>
       </Implementation>
     </Method>
@@ -319,6 +328,8 @@ END_VAR
       <LineId Id="49" Count="1" />
       <LineId Id="48" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="52" Count="2" />
+      <LineId Id="51" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveRelative">
       <LineId Id="4" Count="0" />
@@ -332,7 +343,11 @@ END_VAR
       <LineId Id="51" Count="0" />
       <LineId Id="53" Count="1" />
       <LineId Id="52" Count="0" />
+      <LineId Id="55" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="58" Count="1" />
     </LineIds>
     <LineIds Name="FB_Servo._M_Reset">
       <LineId Id="15" Count="0" />
