@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="d13ef632-250d-463c-8ea5-b48f2156dd0a">_M_AXISPOWER_1</Type>
+      <From>_M_AxisPower_1</From>
+      <To>_M_AxisStop</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

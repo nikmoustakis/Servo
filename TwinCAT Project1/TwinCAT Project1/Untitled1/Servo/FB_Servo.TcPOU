@@ -12,7 +12,7 @@ VAR
 	Move_Relative : MC_MoveRelative;
 	Reset         : MC_Reset;
 	ReadStatus    : MC_READSTATUS;
-	
+	Stop          : MC_STOP;
 	Status         : ST_AxisStatus;
 	
 	Axis          : Axis_REF;
@@ -25,12 +25,16 @@ VAR
 	Deceleration: LREAL;
 	jerk: LREAL;
 	
+	Stop_Decel : LREAL;
+	Stop_Jerk  : LREAL;
+	
 	ServoAxisMove : ST_ServoAxisMove;
 	
 	//Commands
 	Reset_Command   : BOOL;
 	Move_Abs_Command  : BOOL;
 	Move_Rel_Command : BOOL;
+	Stop_Command     : BOOL;
 	
 	
 	
@@ -42,6 +46,7 @@ _M_AxisPower();
 
 _M_MoveAbsolute();
 _M_MoveRelative();
+_M_AxisStop();
 
 
 _M_Reset();
@@ -71,6 +76,21 @@ END_VAR
         <ST><![CDATA[ReadStatus(Axis := Axis, Enable := TRUE);
 
 Status := ReadStatus.Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="_M_AxisStop" Id="{d13ef632-250d-463c-8ea5-b48f2156dd0a}" FolderPath="private\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_AxisStop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Stop_Command THEN 
+	Stop(Axis := Axis, Execute := Stop_Command, Deceleration := Stop_Decel, Jerk := Stop_Jerk);
+ELSIF Stop.Done THEN 
+	Stop(Axis := Axis, Execute := FALSE, Deceleration := Stop_Decel, Jerk := Stop_Jerk);
+	Stop_Command := FALSE;
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\">
@@ -271,6 +291,19 @@ END_VAR
 M_ServoInTargetPos := abs(aXIS.NcToPlc.ActPos - Axis.NcToPlc.TargetPos) <= Precision;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_Stop" Id="{fc6258ba-9e7d-40e5-8697-763050bff524}">
+      <Declaration><![CDATA[METHOD M_Stop : BOOL
+VAR_INPUT
+	Decel : LREAL;
+	Jerk  : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Stop_Command := TRUE;
+
+]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="P_Axis" Id="{44d9c3e2-7658-4434-a9d6-2ffaaabef781}">
       <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{6c6f9f9e-1088-479d-acae-6038779f8d6a}">
@@ -324,6 +357,7 @@ END_VAR
       <LineId Id="53" Count="1" />
       <LineId Id="42" Count="0" />
       <LineId Id="55" Count="0" />
+      <LineId Id="94" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="29" Count="0" />
@@ -335,6 +369,13 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Servo._M_AxisStatus">
       <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo._M_AxisStop">
+      <LineId Id="10" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="2" />
+      <LineId Id="18" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
@@ -420,6 +461,11 @@ END_VAR
       <LineId Id="6" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_Stop">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_Axis.Get">
       <LineId Id="2" Count="0" />

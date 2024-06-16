@@ -20,6 +20,9 @@ VAR
 	Vel : LREAL := 100;
 	Acc : LREAL := 1000;
 	Jerk : LREAL := 10000;
+	
+	ServoAxisMove_Abs : ST_ServoAxisMove;
+	ServoAxisMove_Rel : ST_ServoAxisMove;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -30,16 +33,35 @@ Servo.P_Interlock.Move_Positive := InterlocksOk;
 Servo.P_Interlock.SafetyOk := InterlocksOk;
 
 
+//Servo Absolute Configuration
+ServoAxisMove_Abs.Acceleration := 1000;
+ServoAxisMove_Abs.Deceleration := 1000;
+ServoAxisMove_Abs.jerk := 10000;
+ServoAxisMove_Abs.Position :=Pos;
+ServoAxisMove_Abs.Velocity := Vel;
+ServoAxisMove_Abs.MotionType := E_ServoTypeMoves.AbsoluteMove;
+
+//Servo Relative Motion Configuration
+ServoAxisMove_Rel.Acceleration := 1000;
+ServoAxisMove_Rel.Deceleration := 1000;
+ServoAxisMove_Rel.jerk := 10000;
+ServoAxisMove_Rel.Position :=Pos;
+ServoAxisMove_Rel.Velocity := Vel;
+ServoAxisMove_Rel.MotionType := E_ServoTypeMoves.AbsoluteMove;
 
 IF GoPos THEN 
-	Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	//Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	
+	Servo.M_Move(ServoAxisMove_Abs);
 	GoPos := FALSE;
 	
 
 END_IF
 
 IF GoPosrel THEN 
-	Servo.M_Moverelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	//Servo.M_Moverelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
+	
+	Servo.M_Move(ServoAxisMove_Rel);
 	GoPosrel := FALSE;
 	
 END_IF
@@ -63,12 +85,24 @@ Servo.Axis.Status.Operational;
       <LineId Id="19" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="20" Count="2" />
-      <LineId Id="29" Count="2" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="84" Count="4" />
+      <LineId Id="91" Count="6" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="98" Count="0" />
       <LineId Id="28" Count="0" />
       <LineId Id="32" Count="0" />
-      <LineId Id="41" Count="2" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="42" Count="1" />
       <LineId Id="33" Count="0" />
-      <LineId Id="47" Count="4" />
+      <LineId Id="47" Count="3" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="51" Count="0" />
       <LineId Id="46" Count="0" />
       <LineId Id="56" Count="0" />
       <LineId Id="55" Count="0" />
