@@ -15,8 +15,9 @@ VAR
 	goposrel : BOOL;
 	
 	RESET_CMD : BOOL;
+	Stop_CMD  : BOOL;
 	
-	Pos : LREAL;
+	Pos : LREAL := 1200;
 	Vel : LREAL := 100;
 	Acc : LREAL := 1000;
 	Jerk : LREAL := 10000;
@@ -47,7 +48,7 @@ ServoAxisMove_Rel.Deceleration := 1000;
 ServoAxisMove_Rel.jerk := 10000;
 ServoAxisMove_Rel.Position :=Pos;
 ServoAxisMove_Rel.Velocity := Vel;
-ServoAxisMove_Rel.MotionType := E_ServoTypeMoves.AbsoluteMove;
+ServoAxisMove_Rel.MotionType := E_ServoTypeMoves.RelativeMove;
 
 IF GoPos THEN 
 	//Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
@@ -71,12 +72,18 @@ IF Reset_cmd THEN
 	rESET_Cmd := FALSE;
 END_IF
 
+IF Stop_CMD THEN 
+	Servo.M_Stop(100,100);
+	Stop_CMD := FALSE;
+END_IF
+
 Servo.Status.StandStill;
 Servo.Axis.NcToPlc.ActPos;
 Servo.Status.Moving;
 Servo.Status.Error;
 Servo.Status.ErrorID;
 
+Servo.Axis.Status.Stopping;
 Servo.Axis.Status.Operational;
 
 ]]></ST>
@@ -109,10 +116,16 @@ Servo.Axis.Status.Operational;
       <LineId Id="57" Count="0" />
       <LineId Id="59" Count="0" />
       <LineId Id="58" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="129" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="36" Count="2" />
+      <LineId Id="131" Count="0" />
       <LineId Id="26" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="27" Count="0" />

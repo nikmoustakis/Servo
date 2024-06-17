@@ -84,12 +84,15 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF Stop_Command THEN 
-	Stop(Axis := Axis, Execute := Stop_Command, Deceleration := Stop_Decel, Jerk := Stop_Jerk);
-ELSIF Stop.Done THEN 
-	Stop(Axis := Axis, Execute := FALSE, Deceleration := Stop_Decel, Jerk := Stop_Jerk);
+        <ST><![CDATA[
+Stop(Axis := Axis, Execute := Stop_Command, Deceleration := Stop_Decel, Jerk := Stop_Jerk);
+
+IF Stop.Done THEN 
+	
 	Stop_Command := FALSE;
 END_IF
+
+
 ]]></ST>
       </Implementation>
     </Method>
@@ -99,30 +102,34 @@ END_IF
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[IF Move_Abs_CommaND AND MoveAbsolute.Done THEN
+	Move_Abs_CommaND := FALSE;
 
+	
+ELSIF Move_Abs_CommaND AND MoveAbsolute.Error OR Axis.Status.Error THEN 
+	Move_Abs_CommaND := FALSE;
+	
+END_IF
 
-IF Power.Status AND Axis.Status.Operational AND Axis.Status.StandStill AND NOT Axis.Status.Error AND Move_Abs_CommaND AND NOT MoveAbsolute.Done THEN 
-	MoveAbsolute(Axis := Axis,
-	Execute := Move_Abs_CommaND,
+IF Move_Abs_Command AND Axis.Status.Moving THEN 
+	Move_Abs_Command := FALSE;
+END_IF
+
+IF MoveAbsolute.Busy AND Axis.Status.Stopping THEN 
+	Move_Abs_Command := FALSE;
+END_IF
+
+IF Move_Abs_Command AND NOT Interlock.SafetyOk THEN 
+	Move_Abs_Command := FALSE;
+END_IF
+
+MoveAbsolute(Axis := Axis,
+	Execute := Move_abs_CommaND,
 	Position := Position, 
 	Velocity := Velocity, 
 	Acceleration := Acceleration,
 	Deceleration := Deceleration,
-	jerk:= Jerk);
-ELSIF Move_Abs_CommaND AND MoveAbsolute.Done THEN
-	Move_Abs_CommaND := FALSE;
-	MoveAbsolute(Axis := Axis,
-	Execute := FALSE);
-ELSIF Move_Abs_CommaND AND MoveAbsolute.Error OR Axis.Status.Error THEN 
-	Move_Abs_CommaND := FALSE;
-	MoveAbsolute(Axis := Axis,
-	Execute := FALSE);
-END_IF
-
-IF Move_Abs_CommaND AND NOT Interlock.SafetyOk THEN 
-	Move_Abs_CommaND := FALSE;
-END_IF]]></ST>
+	jerk:= Jerk);]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_MoveRelative" Id="{af615df7-338b-44c1-af2d-18935f295b52}" FolderPath="private\">
@@ -131,28 +138,34 @@ END_IF]]></ST>
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF Power.Status AND Axis.Status.Operational AND Axis.Status.StandStill AND NOT Axis.Status.Error AND Move_rel_CommaND AND NOT Move_Relative.Done THEN 
-	Move_Relative(Axis := Axis,
+        <ST><![CDATA[IF Move_rel_CommaND AND Move_Relative.Done THEN
+	Move_rel_CommaND := FALSE;
+	
+	
+ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
+	Move_rel_CommaND := FALSE;
+
+END_IF
+
+IF Move_rel_CommaND AND Axis.Status.Moving THEN 
+	Move_rel_CommaND := FALSE;
+END_IF
+
+IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
+	Move_rel_CommaND := FALSE;
+END_IF
+
+IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
+	Move_rel_CommaND := FALSE;
+END_IF
+
+Move_Relative(Axis := Axis,
 	Execute := Move_rel_CommaND,
 	Distance := Position, 
 	Velocity := Velocity, 
 	Acceleration := Acceleration,
 	Deceleration := Deceleration,
-	jerk:= Jerk);
-ELSIF Move_rel_CommaND AND Move_Relative.Done THEN
-	Move_rel_CommaND := FALSE;
-	Move_Relative(Axis := Axis,
-	Execute := FALSE);
-ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
-	Move_rel_CommaND := FALSE;
-	Move_Relative(Axis := Axis,
-	Execute := FALSE);
-
-END_IF
-
-IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
-	Move_rel_CommaND := FALSE;
-END_IF]]></ST>
+	jerk:= Jerk);]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_Reset" Id="{f4c6b72c-1516-450c-baf2-151d10c2a097}" FolderPath="private\">
@@ -162,19 +175,13 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-IF Reset_Command THEN
-
-	Reset(Axis := Axis, Execute := Reset_Command);
-
-END_IF
-
-
 
 IF Reset.Done THEN 
-	Reset(Axis := Axis,Execute := FALSE);
 	
 	Reset_Command := FALSE;
 END_IF
+
+Reset(Axis := Axis, Execute := Reset_Command);
 ]]></ST>
       </Implementation>
     </Method>
@@ -299,7 +306,11 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Stop_Command := TRUE;
+        <ST><![CDATA[Stop_Decel := Decel;
+Stop_Jerk  := Jerk;
+
+
+Stop_Command := TRUE;
 
 ]]></ST>
       </Implementation>
@@ -374,54 +385,56 @@ END_VAR
     <LineIds Name="FB_Servo._M_AxisStop">
       <LineId Id="10" Count="0" />
       <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
       <LineId Id="19" Count="2" />
       <LineId Id="18" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
-      <LineId Id="31" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="13" Count="4" />
-      <LineId Id="34" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="36" Count="0" />
+      <LineId Id="34" Count="2" />
+      <LineId Id="70" Count="0" />
       <LineId Id="47" Count="0" />
       <LineId Id="49" Count="1" />
-      <LineId Id="48" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="60" Count="1" />
       <LineId Id="52" Count="2" />
       <LineId Id="51" Count="0" />
+      <LineId Id="72" Count="6" />
+      <LineId Id="71" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveRelative">
-      <LineId Id="4" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="14" Count="3" />
       <LineId Id="34" Count="1" />
       <LineId Id="37" Count="0" />
-      <LineId Id="36" Count="0" />
+      <LineId Id="75" Count="0" />
       <LineId Id="51" Count="0" />
-      <LineId Id="53" Count="1" />
+      <LineId Id="53" Count="0" />
       <LineId Id="52" Count="0" />
-      <LineId Id="55" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="64" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="56" Count="0" />
       <LineId Id="58" Count="1" />
+      <LineId Id="77" Count="6" />
+      <LineId Id="76" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_Reset">
-      <LineId Id="15" Count="0" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="7" Count="4" />
+      <LineId Id="8" Count="2" />
       <LineId Id="18" Count="1" />
       <LineId Id="12" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_GearInDyn">
@@ -463,6 +476,9 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Stop">
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="16" Count="1" />
       <LineId Id="7" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="8" Count="0" />
