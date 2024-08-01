@@ -18,24 +18,6 @@
     <LibraryReferences>{bbaf044d-9a65-403c-9427-1f34f96172db}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\E_ServoTypeMoves.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_ServoAxisMove.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_ServoInterlocks.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_ServoStatus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_ServoConfiguration.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_ServoMove.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Error\DUTs\E_ErrorPriority.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -51,10 +33,6 @@
     </Compile>
     <Compile Include="Error\POUs\F_ResetErrorList.TcPOU">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GVLs\Param_Servo.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PermIntlk\PermIntlk\FB_PermIntlk.TcPOU">
       <SubType>Code</SubType>
@@ -79,23 +57,45 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Servo\DUTs\E_ServoTypeMoves.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_ServoAxisMove.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_ServoConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_ServoInterlocks.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_ServoMove.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_ServoStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Servo\FB_Servo.TcPOU">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\GVLs\Param_Servo.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="Servo\ITF_Servo.TcIO">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DUTs" />
     <Folder Include="Error" />
     <Folder Include="Error\DUTs" />
     <Folder Include="Error\GVLs" />
     <Folder Include="Error\POUs" />
-    <Folder Include="GVLs" />
     <Folder Include="Servo" />
     <Folder Include="PermIntlk" />
     <Folder Include="PermIntlk\PermIntlk" />
+    <Folder Include="Servo\DUTs" />
+    <Folder Include="Servo\GVLs" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

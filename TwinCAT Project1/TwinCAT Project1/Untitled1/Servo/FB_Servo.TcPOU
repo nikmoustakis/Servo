@@ -36,6 +36,8 @@ VAR
 	Move_Rel_Command : BOOL;
 	Stop_Command     : BOOL;
 	
+	Move_Rel_Cmd_Trq : R_TRIG;
+	
 	
 	
 END_VAR
@@ -103,24 +105,24 @@ END_IF
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF Move_Abs_CommaND AND MoveAbsolute.Done THEN
-	Move_Abs_CommaND := FALSE;
+	//Move_Abs_CommaND := FALSE;
 
 	
 ELSIF Move_Abs_CommaND AND MoveAbsolute.Error OR Axis.Status.Error THEN 
-	Move_Abs_CommaND := FALSE;
+	//Move_Abs_CommaND := FALSE;
 	
 END_IF
 
 IF Move_Abs_Command AND Axis.Status.Moving THEN 
-	Move_Abs_Command := FALSE;
+	//Move_Abs_Command := FALSE;
 END_IF
 
 IF MoveAbsolute.Busy AND Axis.Status.Stopping THEN 
-	Move_Abs_Command := FALSE;
+	//Move_Abs_Command := FALSE;
 END_IF
 
 IF Move_Abs_Command AND NOT Interlock.SafetyOk THEN 
-	Move_Abs_Command := FALSE;
+	//Move_Abs_Command := FALSE;
 END_IF
 
 MoveAbsolute(Axis := Axis,
@@ -129,7 +131,10 @@ MoveAbsolute(Axis := Axis,
 	Velocity := Velocity, 
 	Acceleration := Acceleration,
 	Deceleration := Deceleration,
-	jerk:= Jerk);]]></ST>
+	jerk:= Jerk);
+	
+
+Move_abs_CommaND := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_MoveRelative" Id="{af615df7-338b-44c1-af2d-18935f295b52}" FolderPath="private\">
@@ -138,34 +143,36 @@ MoveAbsolute(Axis := Axis,
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF Move_rel_CommaND AND Move_Relative.Done THEN
-	Move_rel_CommaND := FALSE;
+        <ST><![CDATA[//IF Move_rel_CommaND AND Move_Relative.Done THEN
+//	Move_rel_CommaND := FALSE;
 	
 	
-ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
-	Move_rel_CommaND := FALSE;
+//ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
+//	Move_rel_CommaND := FALSE;
 
-END_IF
+//END_IF
 
-IF Move_rel_CommaND AND Axis.Status.Moving THEN 
-	Move_rel_CommaND := FALSE;
-END_IF
+//IF Move_rel_CommaND AND Axis.Status.Moving THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
 
-IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
-	Move_rel_CommaND := FALSE;
-END_IF
+//IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
 
-IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
-	Move_rel_CommaND := FALSE;
-END_IF
-
+//IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
+//Move_Rel_Cmd_Trq(CLK := Move_rel_CommaND);
 Move_Relative(Axis := Axis,
 	Execute := Move_rel_CommaND,
 	Distance := Position, 
 	Velocity := Velocity, 
 	Acceleration := Acceleration,
 	Deceleration := Deceleration,
-	jerk:= Jerk);]]></ST>
+	jerk:= Jerk);
+	
+Move_rel_CommaND := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_Reset" Id="{f4c6b72c-1516-450c-baf2-151d10c2a097}" FolderPath="private\">
@@ -408,6 +415,9 @@ END_VAR
       <LineId Id="51" Count="0" />
       <LineId Id="72" Count="6" />
       <LineId Id="71" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="83" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveRelative">
       <LineId Id="34" Count="1" />
@@ -428,6 +438,7 @@ END_VAR
       <LineId Id="58" Count="1" />
       <LineId Id="77" Count="6" />
       <LineId Id="76" Count="0" />
+      <LineId Id="88" Count="1" />
     </LineIds>
     <LineIds Name="FB_Servo._M_Reset">
       <LineId Id="8" Count="2" />
