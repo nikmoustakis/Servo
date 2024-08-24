@@ -10,6 +10,7 @@ VAR
 	Power         : MC_POWER;
 	MoveAbsolute  : MC_MoveAbsolute;
 	Move_Relative : MC_MoveRelative;
+	MoveVelocity  : MC_MoveVelocity;
 	Reset         : MC_Reset;
 	ReadStatus    : MC_READSTATUS;
 	Stop          : MC_STOP;
@@ -31,12 +32,13 @@ VAR
 	ServoAxisMove : ST_ServoAxisMove;
 	
 	//Commands
-	Reset_Command   : BOOL;
-	Move_Abs_Command  : BOOL;
+	Reset_Command    : BOOL;
+	Move_Abs_Command : BOOL;
 	Move_Rel_Command : BOOL;
+	Move_Vel_Command : BOOL;
 	Stop_Command     : BOOL;
 	
-	Move_Rel_Cmd_Trq : R_TRIG;
+	
 	
 	
 	
@@ -48,14 +50,21 @@ _M_AxisPower();
 
 _M_MoveAbsolute();
 _M_MoveRelative();
+_M_MoveVelocity();
 _M_AxisStop();
 
 
 _M_Reset();
+
+
+
+
 ]]></ST>
     </Implementation>
-    <Folder Name="private" Id="{15b6f15f-0194-45c7-8f58-722fbfb6d2ab}" />
-    <Method Name="_M_AxisPower" Id="{4c330321-e3d3-4957-bc2e-0261fcc2edf7}" FolderPath="private\">
+    <Folder Name="private" Id="{15b6f15f-0194-45c7-8f58-722fbfb6d2ab}">
+      <Folder Name="Axis Commands" Id="{78eeb960-c4cf-444e-97ea-d87b728c3d73}" />
+    </Folder>
+    <Method Name="_M_AxisPower" Id="{4c330321-e3d3-4957-bc2e-0261fcc2edf7}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_AxisPower : BOOL
 VAR_INPUT
 END_VAR
@@ -69,7 +78,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="_M_AxisStatus" Id="{5137a974-7a96-4899-a668-672a484c6090}" FolderPath="private\">
+    <Method Name="_M_AxisStatus" Id="{5137a974-7a96-4899-a668-672a484c6090}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_AxisStatus : BOOL
 VAR_INPUT
 END_VAR
@@ -80,7 +89,7 @@ END_VAR
 Status := ReadStatus.Status;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="_M_AxisStop" Id="{d13ef632-250d-463c-8ea5-b48f2156dd0a}" FolderPath="private\">
+    <Method Name="_M_AxisStop" Id="{d13ef632-250d-463c-8ea5-b48f2156dd0a}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_AxisStop : BOOL
 VAR_INPUT
 END_VAR
@@ -98,7 +107,7 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\">
+    <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_MoveAbsolute
 
 
@@ -137,7 +146,7 @@ MoveAbsolute(Axis := Axis,
 Move_abs_CommaND := FALSE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="_M_MoveRelative" Id="{af615df7-338b-44c1-af2d-18935f295b52}" FolderPath="private\">
+    <Method Name="_M_MoveRelative" Id="{af615df7-338b-44c1-af2d-18935f295b52}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_MoveRelative
 
 
@@ -175,7 +184,44 @@ Move_Relative(Axis := Axis,
 Move_rel_CommaND := FALSE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="_M_Reset" Id="{f4c6b72c-1516-450c-baf2-151d10c2a097}" FolderPath="private\">
+    <Method Name="_M_MoveVelocity" Id="{53d986ab-9963-485f-bd13-49af33c0efd4}" FolderPath="private\Axis Commands\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_MoveVelocity
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//IF Move_rel_CommaND AND Move_Relative.Done THEN
+//	Move_rel_CommaND := FALSE;
+	
+	
+//ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
+//	Move_rel_CommaND := FALSE;
+
+//END_IF
+
+//IF Move_rel_CommaND AND Axis.Status.Moving THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
+
+//IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
+
+//IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
+//	Move_rel_CommaND := FALSE;
+//END_IF
+//Move_Rel_Cmd_Trq(CLK := Move_rel_CommaND);
+MoveVelocity(Axis := Axis,
+	Execute := Move_Vel_Command,
+	Velocity := Velocity, 
+	Acceleration := Acceleration,
+	Deceleration := Deceleration,
+	jerk:= Jerk);
+	
+Move_Vel_Command := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="_M_Reset" Id="{f4c6b72c-1516-450c-baf2-151d10c2a097}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_Reset : BOOL
 VAR_INPUT
 END_VAR
@@ -228,6 +274,8 @@ IF (ServoAxisMove.MotionType = E_ServoTypeMoves.AbsoluteMove) THEN
 	Move_Abs_Command := TRUE;
 ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.RelativeMove) THEN 
 	Move_Rel_Command := TRUE;
+ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.VelocityMove) THEN 
+	Move_Vel_Command := TRUE;
 END_IF]]></ST>
       </Implementation>
     </Method>
@@ -275,11 +323,21 @@ THIS^.jerk:= jerk;  ]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_MoveVelocity" Id="{13ce1d10-c5ed-4966-b74b-fbd2d6e043fc}">
-      <Declaration><![CDATA[METHOD M_MoveVelocity
+      <Declaration><![CDATA[METHOD PUBLIC M_MoveVelocity 
 
-]]></Declaration>
+VAR_INPUT
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[Move_Vel_Command := TRUE;
+
+THIS^.Velocity := Velocity;
+THIS^.Acceleration := Acceleration;
+THIS^.Deceleration:= Deceleration;
+THIS^.jerk:= jerk;  ]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Reset" Id="{5489ebc0-401e-45be-88dd-ca97434e5c0c}">
@@ -294,15 +352,15 @@ Reset_Command := TRUE;
       </Implementation>
     </Method>
     <Method Name="M_ServoInTargetPos" Id="{975e008a-d4ce-442f-9c13-57b0a17c9c1b}">
-      <Declaration><![CDATA[METHOD M_ServoInTargetPos : BOOL
+      <Declaration><![CDATA[METHOD PUBLIC M_ServoInTargetPos : BOOL
 VAR_INPUT
+	Position  : LREAL;
 	Precision : LREAL;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 
-M_ServoInTargetPos := abs(aXIS.NcToPlc.ActPos - Axis.NcToPlc.TargetPos) <= Precision;]]></ST>
+M_ServoInTargetPos := abs(aXIS.NcToPlc.ActPos - Position) <= Precision;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Stop" Id="{fc6258ba-9e7d-40e5-8697-763050bff524}">
@@ -375,10 +433,13 @@ END_VAR
       <LineId Id="53" Count="1" />
       <LineId Id="42" Count="0" />
       <LineId Id="55" Count="0" />
+      <LineId Id="141" Count="0" />
       <LineId Id="94" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="29" Count="0" />
+      <LineId Id="136" Count="2" />
+      <LineId Id="135" Count="0" />
       <LineId Id="28" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_AxisPower">
@@ -440,6 +501,28 @@ END_VAR
       <LineId Id="76" Count="0" />
       <LineId Id="88" Count="1" />
     </LineIds>
+    <LineIds Name="FB_Servo._M_MoveVelocity">
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="58" Count="1" />
+      <LineId Id="77" Count="2" />
+      <LineId Id="81" Count="2" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="88" Count="1" />
+    </LineIds>
     <LineIds Name="FB_Servo._M_Reset">
       <LineId Id="8" Count="2" />
       <LineId Id="18" Count="1" />
@@ -460,6 +543,7 @@ END_VAR
       <LineId Id="5" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="16" Count="1" />
+      <LineId Id="22" Count="1" />
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_MoveAbsolute">
@@ -473,6 +557,8 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_MoveVelocity">
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="3" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Reset">

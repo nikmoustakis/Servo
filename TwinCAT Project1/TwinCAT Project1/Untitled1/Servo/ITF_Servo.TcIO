@@ -44,9 +44,14 @@ VAR_INPUT
 END_VAR]]></Declaration>
     </Method>
     <Method Name="M_MoveVelocity" Id="{a40c83ca-f09c-4283-97a3-42e602271c37}">
-      <Declaration><![CDATA[METHOD M_MoveVelocity
+      <Declaration><![CDATA[METHOD PUBLIC M_MoveVelocity
 
-]]></Declaration>
+VAR_INPUT
+	Velocity : LREAL;
+	Acceleration : LREAL;
+	Deceleration: LREAL;
+	jerk: LREAL;
+END_VAR]]></Declaration>
     </Method>
     <Method Name="M_Reset" Id="{caf815d4-5543-4773-bd0f-b83b9282d109}">
       <Declaration><![CDATA[METHOD M_Reset : BOOL
@@ -54,8 +59,9 @@ END_VAR]]></Declaration>
 ]]></Declaration>
     </Method>
     <Method Name="M_ServoInTargetPos" Id="{6f116aa2-57a7-4089-b3d7-2e6ef473c556}">
-      <Declaration><![CDATA[METHOD M_ServoInTargetPos : BOOL
+      <Declaration><![CDATA[METHOD PUBLIC M_ServoInTargetPos : BOOL
 VAR_INPUT
+	Position  : LREAL;
 	Precision : LREAL;
 END_VAR
 ]]></Declaration>
