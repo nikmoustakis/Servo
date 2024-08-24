@@ -38,6 +38,9 @@ VAR
 	ServoAxisMove_Rel  : ST_ServoAxisMove;
 	ServoAxisMove_Vel  : ST_ServoAxisMove;
 	
+	Mc_GearInDyn       : MC_GearInDyn;
+	Mc_GearOut         : MC_GearOut;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -108,6 +111,22 @@ IF Stop_CMD THEN
 	Stop_CMD := FALSE;
 END_IF
 
+
+	Mc_GearInDyn(Master := Servo.P_Axis,
+					Slave := SlaveAxis.P_Axis,
+					Enable := GearIn_Cmd,
+					GearRatio := GearRatio,
+					Acceleration := Acc,
+					Deceleration := 12000,
+					GearRatio := GearRatio);
+					
+	Mc_GearOut(Slave := SlaveAxis.P_Axis,
+				Execute := 	GearOut_Cmd);
+		
+Servo.Status.Coupled;
+SlaveAxis.Status.Coupled;
+
+
 Servo.Status.StandStill;
 Servo.Axis.NcToPlc.ActPos;
 Servo.Status.Moving;
@@ -162,7 +181,19 @@ Servo.Axis.Status.Operational;
       <LineId Id="128" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="129" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="245" Count="3" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="255" Count="1" />
+      <LineId Id="244" Count="0" />
       <LineId Id="35" Count="0" />
+      <LineId Id="254" Count="0" />
+      <LineId Id="253" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="36" Count="2" />
