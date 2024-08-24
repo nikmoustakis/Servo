@@ -7,8 +7,8 @@ TYPE E_ServoTypeMoves :
 (
 	AbsoluteMove := 0,
 	RelativeMove := 1,
-	VelocityMove := 2,
-	DynamicGear  := 3
+	VelocityMove := 2
+	
 );
 END_TYPE
 ]]></Declaration>

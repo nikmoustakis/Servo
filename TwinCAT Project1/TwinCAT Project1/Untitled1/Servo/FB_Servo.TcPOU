@@ -12,11 +12,12 @@ VAR
 	Move_Relative 	   : MC_MoveRelative;
 	MoveVelocity  	   : MC_MoveVelocity;
 	mc_MoveGearInDyn   : MC_GearInDyn;
+	mc_GearOut         : MC_GearOut;
 	Reset         	   : MC_Reset;
 	ReadStatus    	   : MC_READSTATUS;
 	Stop          	   : MC_STOP;
 	Status             : ST_AxisStatus;
-	SlaveAxis          : REFERENCE TO Axis_REF;
+
 	Axis               : Axis_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
@@ -41,6 +42,7 @@ VAR
 	Move_Rel_Command   : BOOL;
 	Move_Vel_Command   : BOOL;
 	GearIn_Dyn_Command : BOOL;
+	GearOut_Command    : BOOL;
 	Stop_Command       : BOOL;
 	
 	
@@ -48,6 +50,7 @@ VAR
 	
 	
 END_VAR
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[_M_AxisStatus();
@@ -56,7 +59,7 @@ _M_AxisPower();
 _M_MoveAbsolute();
 _M_MoveRelative();
 _M_MoveVelocity();
-_M_GearInDyn();
+
 
 _M_AxisStop();
 
@@ -110,25 +113,6 @@ IF Stop.Done THEN
 	Stop_Command := FALSE;
 END_IF
 
-
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="_M_GearInDyn" Id="{9cd4d821-e141-4cd9-beeb-e011a4646e0f}" FolderPath="private\Axis Commands\">
-      <Declaration><![CDATA[METHOD PRIVATE _M_GearInDyn : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
-					Slave := SlaveAxis,
-					Enable := GearIn_Dyn_Command,
-					GearRatio := GearRatio,
-					Acceleration := Acceleration);
-					
-
-					
-	
 
 ]]></ST>
       </Implementation>
@@ -262,34 +246,6 @@ END_IF
 
 Reset(Axis := Axis, Execute := Reset_Command);
 ]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="M_GearInDyn" Id="{7f53a7c1-64aa-4e18-b4bf-f2023647c23d}">
-      <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
-VAR_INPUT
-	Enable       : BOOL;
-    GearRatio    : LREAL;
-    Acceleration : LREAL;
-    Deceleration : LREAL;
-    Jerk         : LREAL;
-    BufferMode   : MC_BufferMode; 
-    Options      : ST_GearInDynOptions;
-	
-	SlaveAxis    : REFERENCE TO AXIS_REF;
-END_VAR
-
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-
-
-THIS^.GearIn_Dyn_Command := Enable;
-THIS^.GearRatio := GearRatio;
-THIS^.Acceleration := Acceleration;
-THIS^.Deceleration:= Deceleration;
-THIS^.Jerk:= jerk; 
-
-THIS^.SlaveAxis := SlaveAxis;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}">
@@ -479,7 +435,7 @@ END_VAR
       <LineId Id="42" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="141" Count="0" />
-      <LineId Id="151" Count="0" />
+      <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
       <LineId Id="94" Count="0" />
       <LineId Id="16" Count="0" />
@@ -505,14 +461,6 @@ END_VAR
       <LineId Id="18" Count="0" />
       <LineId Id="27" Count="0" />
       <LineId Id="26" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Servo._M_GearInDyn">
-      <LineId Id="12" Count="0" />
-      <LineId Id="15" Count="1" />
-      <LineId Id="18" Count="3" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="13" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
@@ -585,14 +533,6 @@ END_VAR
       <LineId Id="24" Count="0" />
       <LineId Id="23" Count="0" />
       <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Servo.M_GearInDyn">
-      <LineId Id="18" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="19" Count="4" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="31" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />

@@ -4,7 +4,7 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	Servo : FB_Servo;
-	
+	SlaveAxis : FB_Servo;
 	
 	
 	InterlocksOk : BOOL;
@@ -18,6 +18,12 @@ VAR
 	
 	GoVel_Cmd : BOOL;
 	
+	//Gear Commands
+	GearIn_Cmd    : BOOL;
+	GearOut_Cmd   : BOOL;
+	
+	//Reset, Stop Commands
+	
 	RESET_CMD : BOOL;
 	Stop_CMD  : BOOL;
 	
@@ -26,10 +32,12 @@ VAR
 	Vel : LREAL := 100;
 	Acc : LREAL := 1000;
 	Jerk : LREAL := 10000;
+	GearRatio : LREAL := 2;
 	
-	ServoAxisMove_Abs : ST_ServoAxisMove;
-	ServoAxisMove_Rel : ST_ServoAxisMove;
-	ServoAxisMove_Vel : ST_ServoAxisMove;
+	ServoAxisMove_Abs  : ST_ServoAxisMove;
+	ServoAxisMove_Rel  : ST_ServoAxisMove;
+	ServoAxisMove_Vel  : ST_ServoAxisMove;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -38,6 +46,11 @@ Servo();
 Servo.P_Interlock.Move_Negative := InterlocksOk;
 Servo.P_Interlock.Move_Positive := InterlocksOk;
 Servo.P_Interlock.SafetyOk := InterlocksOk;
+
+SlaveAxis();
+SlaveAxis.P_Interlock.Move_Negative := InterlocksOk;
+SlaveAxis.P_Interlock.Move_Positive := InterlocksOk;
+SlaveAxis.P_Interlock.SafetyOk := InterlocksOk;
 
 
 //Servo Absolute Configuration
@@ -63,6 +76,7 @@ ServoAxisMove_Vel.jerk := 50000;
 ServoAxisMove_Vel.Velocity := Vel;
 ServoAxisMove_Vel.MotionType := E_ServoTypeMoves.VelocityMove;
 
+
 IF GoPosAbs_Cmd THEN 
 	//Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
 	Servo.M_Move(ServoAxisMove_Abs);
@@ -81,6 +95,7 @@ IF GoVel_Cmd THEN
 	Servo.M_Move(ServoAxisMove_Vel);
 	GoVel_Cmd := FALSE;
 END_IF
+
 
 
 IF Reset_cmd THEN 
@@ -108,6 +123,10 @@ Servo.Axis.Status.Operational;
       <LineId Id="19" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="20" Count="2" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="236" Count="1" />
+      <LineId Id="235" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="82" Count="1" />
       <LineId Id="30" Count="0" />
@@ -118,6 +137,7 @@ Servo.Axis.Status.Operational;
       <LineId Id="160" Count="3" />
       <LineId Id="165" Count="0" />
       <LineId Id="159" Count="0" />
+      <LineId Id="183" Count="0" />
       <LineId Id="98" Count="0" />
       <LineId Id="28" Count="0" />
       <LineId Id="32" Count="0" />
@@ -130,7 +150,8 @@ Servo.Axis.Status.Operational;
       <LineId Id="100" Count="0" />
       <LineId Id="46" Count="0" />
       <LineId Id="170" Count="5" />
-      <LineId Id="169" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="206" Count="0" />
       <LineId Id="56" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="57" Count="0" />

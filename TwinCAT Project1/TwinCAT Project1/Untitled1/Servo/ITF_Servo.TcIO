@@ -3,24 +3,6 @@
   <Itf Name="ITF_Servo" Id="{9f4cb64f-ee48-4fe2-8df5-60370a9d528f}">
     <Declaration><![CDATA[INTERFACE ITF_Servo
 ]]></Declaration>
-    <Method Name="M_GearInDyn" Id="{f0856113-0399-4969-9fe9-f0c401329ef1}">
-      <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
-
-VAR_INPUT
-	Enable       : BOOL;
-    GearRatio    : LREAL;
-    Acceleration : LREAL;
-    Deceleration : LREAL;
-    Jerk         : LREAL;
-    BufferMode   : MC_BufferMode; 
-    Options      : ST_GearInDynOptions;
-END_VAR
-
-VAR_IN_OUT
-	SlaveAxis    : AXIS_REF;
-END_VAR
-]]></Declaration>
-    </Method>
     <Method Name="M_Home" Id="{c52db2e8-1431-4f43-b4bf-e0e5d12b988f}">
       <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
