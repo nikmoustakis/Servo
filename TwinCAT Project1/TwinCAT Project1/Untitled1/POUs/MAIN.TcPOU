@@ -9,16 +9,19 @@ VAR
 	
 	InterlocksOk : BOOL;
 	
-	Reset : BOOL;
-	GoPos : BOOL;
 	
-	goposrel : BOOL;
+	GoPosAbs_Cmd : BOOL;
+	Servo_In_Tg_Pos : BOOL;
 	
-	GoVelCmd : BOOL;
+	
+	GoPosrel_Cmd : BOOL;
+	
+	GoVel_Cmd : BOOL;
 	
 	RESET_CMD : BOOL;
 	Stop_CMD  : BOOL;
 	
+	Abs_Pos : LREAL := 100;
 	Pos : LREAL := 1200;
 	Vel : LREAL := 100;
 	Acc : LREAL := 1000;
@@ -41,7 +44,7 @@ Servo.P_Interlock.SafetyOk := InterlocksOk;
 ServoAxisMove_Abs.Acceleration := 1000;
 ServoAxisMove_Abs.Deceleration := 1000;
 ServoAxisMove_Abs.jerk := 10000;
-ServoAxisMove_Abs.Position :=Pos;
+ServoAxisMove_Abs.Position := Abs_Pos;
 ServoAxisMove_Abs.Velocity := Vel;
 ServoAxisMove_Abs.MotionType := E_ServoTypeMoves.AbsoluteMove;
 
@@ -60,23 +63,23 @@ ServoAxisMove_Vel.jerk := 50000;
 ServoAxisMove_Vel.Velocity := Vel;
 ServoAxisMove_Vel.MotionType := E_ServoTypeMoves.VelocityMove;
 
-IF GoPos THEN 
+IF GoPosAbs_Cmd THEN 
 	//Servo.M_MoveAbsolute(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
 	Servo.M_Move(ServoAxisMove_Abs);
-	GoPos := FALSE;
+	GoPosAbs_Cmd := FALSE;
 END_IF
-Servo.M_ServoInTargetPos(Pos,0.01);
+Servo_In_Tg_Pos := Servo.M_ServoInTargetPos(Abs_Pos,0.01);
 
-IF GoPosrel THEN 
+IF GoPosrel_Cmd THEN 
 	//Servo.M_Moverelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
 	Servo.M_Move(ServoAxisMove_Rel);
-	GoPosrel := FALSE;
+	GoPosrel_Cmd := FALSE;
 END_IF
 
-IF GoVelCmd THEN 
+IF GoVel_Cmd THEN 
 	//Servo.M_Moverelative(pOSITION := POS,vELOCITY := VEL, Acceleration := Acc, Deceleration := ACC, jERK := jERK);
 	Servo.M_Move(ServoAxisMove_Vel);
-	GoVelCmd := FALSE;
+	GoVel_Cmd := FALSE;
 END_IF
 
 
