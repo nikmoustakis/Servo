@@ -5,7 +5,19 @@
 ]]></Declaration>
     <Method Name="M_GearInDyn" Id="{f0856113-0399-4969-9fe9-f0c401329ef1}">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
+
 VAR_INPUT
+	Enable       : BOOL;
+    GearRatio    : LREAL;
+    Acceleration : LREAL;
+    Deceleration : LREAL;
+    Jerk         : LREAL;
+    BufferMode   : MC_BufferMode; 
+    Options      : ST_GearInDynOptions;
+END_VAR
+
+VAR_IN_OUT
+	SlaveAxis    : AXIS_REF;
 END_VAR
 ]]></Declaration>
     </Method>
