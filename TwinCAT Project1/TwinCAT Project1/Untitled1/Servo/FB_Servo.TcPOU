@@ -53,7 +53,15 @@ VAR
 	
 END_VAR
 
-]]></Declaration>
+VAR
+	PosBiasState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WAIT, ERROR);
+	SetPosBias   : BOOL;
+	fbReadNC     : ADSREAD := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
+	fbWriteNC    : ADSWRITE := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
+	CurrentNCPos        : LREAL;
+	NewNCPos            : LREAL;
+	DesiredNCPos        : LREAL;
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[_M_AxisStatus();
 _M_AxisPower();
@@ -64,6 +72,8 @@ _M_MoveVelocity();
 
 
 
+
+
 _M_AxisStop();
 
 
@@ -71,11 +81,17 @@ _M_Reset();
 
 
 
+_M_ReadWritePositionBias();
+
+
 
 ]]></ST>
     </Implementation>
+    <Folder Name="Axis Commands" Id="{96b9d42c-745f-4c05-b8b8-23a6aac5b65a}" />
+    <Folder Name="NC Params" Id="{35cef23b-27f0-4db1-8545-e252215f6b2d}" />
     <Folder Name="private" Id="{15b6f15f-0194-45c7-8f58-722fbfb6d2ab}">
       <Folder Name="Axis Commands" Id="{78eeb960-c4cf-444e-97ea-d87b728c3d73}" />
+      <Folder Name="NC Params" Id="{a4f7cbd8-a80f-46eb-a2a3-1defbc0380cd}" />
     </Folder>
     <Method Name="_M_AxisPower" Id="{4c330321-e3d3-4957-bc2e-0261fcc2edf7}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_AxisPower : BOOL
@@ -198,6 +214,60 @@ MoveVelocity(Axis := Axis,
 Move_Vel_Command := FALSE;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="_M_ReadWritePositionBias" Id="{5f590d50-7e02-4b7a-9864-8d9378f50ec5}" FolderPath="private\NC Params\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_ReadWritePositionBias : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE PosBiasState OF
+	IDLE: 
+		IF SetPosBias THEN 
+			PosBiasState := READ_NC;
+			SetPosBias := FALSE;
+		END_IF
+	
+	READ_NC:
+		fbReadNC( IDXGRP := 16#00005001, IDXOFFS := 16#00000007, LEN := 8, DESTADDR := ADR(CurrentNCPos), READ := TRUE );
+
+		PosBiasState := CALCULATE_NEW;
+		
+	CALCULATE_NEW:
+		fbReadNC(READ := FALSE);
+		
+		IF NOT fbReadNC.BUSY THEN
+			IF NOT fbReadNC.ERR THEN 
+				NewNCPos := DesiredNCPos - Axis.NcToPlc.ActPos;
+				PosBiasState := WRITE_NC;
+			END_IF
+			
+		ELSIF fbReadNC.ERR THEN 
+			PosBiasState := ERROR;
+		END_IF
+		
+	WRITE_NC:
+		fbWriteNC( IDXGRP := 16#00005001, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(NewNCPos), WRITE := TRUE );
+
+		PosBiasState := WAIT;
+		
+	WAIT:
+		fbWriteNC(WRITE := FALSE);
+		
+		IF NOT fbWriteNC.BUSY THEN
+			IF NOT fbWriteNC.ERR THEN 
+				
+				PosBiasState := IDLE;
+			END_IF
+			
+		ELSIF fbReadNC.ERR THEN 
+			PosBiasState := ERROR;
+		END_IF
+	
+	ERROR:
+//		fbWriteNC.ERR := FALSE;
+//		fbReadNC.ERR := FALSE;
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="_M_Reset" Id="{f4c6b72c-1516-450c-baf2-151d10c2a097}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_Reset : BOOL
 VAR_INPUT
@@ -212,10 +282,15 @@ IF Reset.Done THEN
 END_IF
 
 Reset(Axis := Axis, Execute := Reset_Command);
+
+IF PosBiasState = ERROR THEN
+	PosBiasState := IDLE;
+
+END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_GearInDyn" Id="{182f26a4-64ea-4bc0-9a99-5e651eb14d69}">
+    <Method Name="M_GearInDyn" Id="{182f26a4-64ea-4bc0-9a99-5e651eb14d69}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
 VAR_INPUT
     GearRatio : LREAL;
@@ -249,7 +324,7 @@ mc_MoveGearInDyn(Master := Axis,
 					]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_GearOut" Id="{dd7c4642-3c10-4b17-9cb9-913b94304714}">
+    <Method Name="M_GearOut" Id="{dd7c4642-3c10-4b17-9cb9-913b94304714}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_GearOut : BOOL
 VAR_INPUT
 	Slave : REFERENCE TO AXIS_REF;
@@ -265,7 +340,7 @@ mc_GearOut(Slave := Slave,
 					]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}">
+    <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
 END_VAR
@@ -274,7 +349,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Move" Id="{1b1758bd-f1b3-469b-ad89-131305a562c1}">
+    <Method Name="M_Move" Id="{1b1758bd-f1b3-469b-ad89-131305a562c1}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Move : BOOL
 VAR_INPUT
 	ServoAxisMove : ST_ServoAxisMove;
@@ -297,7 +372,7 @@ ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.VelocityMove) THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_MoveAbsolute" Id="{c5d595c3-604a-4ace-a856-8edfbb1a47c3}">
+    <Method Name="M_MoveAbsolute" Id="{c5d595c3-604a-4ace-a856-8edfbb1a47c3}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_MoveAbsolute
 
 VAR_INPUT
@@ -320,7 +395,7 @@ THIS^.jerk:= jerk;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_MoveRelative" Id="{f48b3cca-c5f2-4c73-9e2e-c8c3fb1b9b68}">
+    <Method Name="M_MoveRelative" Id="{f48b3cca-c5f2-4c73-9e2e-c8c3fb1b9b68}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_MoveRelative : BOOL
 
 VAR_INPUT
@@ -340,7 +415,7 @@ THIS^.Deceleration:= Deceleration;
 THIS^.jerk:= jerk;  ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_MoveVelocity" Id="{13ce1d10-c5ed-4966-b74b-fbd2d6e043fc}">
+    <Method Name="M_MoveVelocity" Id="{13ce1d10-c5ed-4966-b74b-fbd2d6e043fc}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD PUBLIC M_MoveVelocity 
 
 VAR_INPUT
@@ -358,7 +433,19 @@ THIS^.Deceleration:= Deceleration;
 THIS^.jerk:= jerk;  ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Reset" Id="{5489ebc0-401e-45be-88dd-ca97434e5c0c}">
+    <Method Name="M_ReadWritePositionBias" Id="{a673d982-774a-4a1a-8257-89d034d8b3c5}" FolderPath="NC Params\">
+      <Declaration><![CDATA[METHOD M_ReadWritePositionBias : BOOL
+VAR_INPUT
+	DesiredNCPos : LREAL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SetPosBias := TRUE;
+THIS^.DesiredNCPos := DesiredNCPos;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Reset" Id="{5489ebc0-401e-45be-88dd-ca97434e5c0c}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Reset : BOOL
 
 ]]></Declaration>
@@ -369,7 +456,7 @@ Reset_Command := TRUE;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ServoInTargetPos" Id="{975e008a-d4ce-442f-9c13-57b0a17c9c1b}">
+    <Method Name="M_ServoInTargetPos" Id="{975e008a-d4ce-442f-9c13-57b0a17c9c1b}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD PUBLIC M_ServoInTargetPos : BOOL
 VAR_INPUT
 	Position  : LREAL;
@@ -381,7 +468,7 @@ END_VAR]]></Declaration>
 M_ServoInTargetPos := abs(aXIS.NcToPlc.ActPos - Position) <= Precision;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Stop" Id="{fc6258ba-9e7d-40e5-8697-763050bff524}">
+    <Method Name="M_Stop" Id="{fc6258ba-9e7d-40e5-8697-763050bff524}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Stop : BOOL
 VAR_INPUT
 	Decel : LREAL;
@@ -452,6 +539,8 @@ END_VAR
       <LineId Id="42" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="141" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="267" Count="0" />
       <LineId Id="205" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
@@ -459,6 +548,7 @@ END_VAR
       <LineId Id="16" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="29" Count="0" />
+      <LineId Id="269" Count="2" />
       <LineId Id="136" Count="2" />
       <LineId Id="135" Count="0" />
       <LineId Id="28" Count="0" />
@@ -504,12 +594,40 @@ END_VAR
       <LineId Id="76" Count="0" />
       <LineId Id="88" Count="1" />
     </LineIds>
+    <LineIds Name="FB_Servo._M_ReadWritePositionBias">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="23" Count="3" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="28" Count="4" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="42" Count="10" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="53" Count="3" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Servo._M_Reset">
       <LineId Id="8" Count="2" />
       <LineId Id="18" Count="1" />
       <LineId Id="12" Count="0" />
       <LineId Id="24" Count="0" />
       <LineId Id="23" Count="0" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_GearInDyn">
@@ -557,6 +675,10 @@ END_VAR
       <LineId Id="13" Count="0" />
       <LineId Id="15" Count="3" />
       <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_ReadWritePositionBias">
+      <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Reset">
       <LineId Id="5" Count="0" />

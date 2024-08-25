@@ -3,39 +3,39 @@
   <POU Name="MAIN" Id="{7058af0c-c368-4ceb-9782-8c3da4713ce0}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	Servo : FB_Servo;
-	SlaveAxis : FB_Servo;
+	Servo           : FB_Servo;
+	SlaveAxis       : FB_Servo;
 	
 	
-	InterlocksOk : BOOL;
+	InterlocksOk    : BOOL;
 	
 	
-	GoPosAbs_Cmd : BOOL;
+	GoPosAbs_Cmd    : BOOL;
 	Servo_In_Tg_Pos : BOOL;
 	
 	
-	GoPosrel_Cmd : BOOL;
+	GoPosrel_Cmd    : BOOL;
 	
-	GoVel_Cmd : BOOL;
+	GoVel_Cmd       : BOOL;
 	
 	//Gear Commands
-	GearIn_Cmd    : BOOL;
-	GearOut_Cmd   : BOOL;
+	GearIn_Cmd      : BOOL;
+	GearOut_Cmd     : BOOL;
 	
 	
 	
 	
 	//Reset, Stop Commands
 	
-	RESET_CMD : BOOL;
-	Stop_CMD  : BOOL;
+	RESET_CMD      : BOOL;
+	Stop_CMD       : BOOL;
 	
-	Abs_Pos : LREAL := 100;
-	Pos : LREAL := 1200;
-	Vel : LREAL := 100;
-	Acc : LREAL := 1000;
-	Jerk : LREAL := 10000;
-	GearRatio : LREAL := 2;
+	Abs_Pos        : LREAL := 100;
+	Pos            : LREAL := 1200;
+	Vel            : LREAL := 100;
+	Acc            : LREAL := 1000;
+	Jerk           : LREAL := 10000;
+	GearRatio      : LREAL := 2;
 	
 	ServoAxisMove_Abs  : ST_ServoAxisMove;
 	ServoAxisMove_Rel  : ST_ServoAxisMove;
@@ -44,6 +44,9 @@ VAR
 	Mc_GearInDyn       : MC_GearInDyn;
 	Mc_GearOut         : MC_GearOut;
 	
+	ReadPosBias        : BOOL;
+	
+	DesiredPosition    : LREAL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -145,6 +148,10 @@ Servo.Axis.Status.Stopping;
 Servo.Axis.Status.Operational;
 
 
+IF ReadPosBias THEN
+	Servo.M_ReadWritePositionBias(DesiredPosition);
+	ReadPosBias := FALSE;
+END_IF
 //	Mc_GearInDyn(Master := Servo.P_Axis,
 //					Slave := SlaveAxis.P_Axis,
 //					Enable := GearIn_Cmd,
@@ -220,7 +227,11 @@ Servo.Axis.Status.Operational;
       <LineId Id="366" Count="10" />
       <LineId Id="359" Count="0" />
       <LineId Id="358" Count="0" />
+      <LineId Id="430" Count="0" />
       <LineId Id="241" Count="0" />
+      <LineId Id="431" Count="0" />
+      <LineId Id="433" Count="0" />
+      <LineId Id="432" Count="0" />
       <LineId Id="243" Count="0" />
       <LineId Id="245" Count="3" />
       <LineId Id="250" Count="0" />
