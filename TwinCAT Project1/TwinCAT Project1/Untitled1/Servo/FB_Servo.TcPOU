@@ -218,7 +218,6 @@ Reset(Axis := Axis, Execute := Reset_Command);
     <Method Name="M_GearInDyn" Id="{182f26a4-64ea-4bc0-9a99-5e651eb14d69}">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
 VAR_INPUT
-	Enable    : BOOL;
     GearRatio : LREAL;
     Acceleration : LREAL;
     Deceleration : LREAL;
@@ -228,11 +227,12 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[mc_GearOut(Slave := Slave,
+			Execute := FALSE);
 
 mc_MoveGearInDyn(Master := Axis,
 					Slave := Slave,
-					Enable := Enable,
+					Enable := TRUE,
 					GearRatio := GearRatio,
 					Acceleration := Acceleration,
 					Deceleration := Deceleration,
@@ -252,7 +252,6 @@ mc_MoveGearInDyn(Master := Axis,
     <Method Name="M_GearOut" Id="{dd7c4642-3c10-4b17-9cb9-913b94304714}">
       <Declaration><![CDATA[METHOD M_GearOut : BOOL
 VAR_INPUT
-	Execute : BOOL;
 	Slave : REFERENCE TO AXIS_REF;
 END_VAR
 ]]></Declaration>
@@ -262,7 +261,7 @@ END_VAR
 					Enable := FALSE);
 
 mc_GearOut(Slave := Slave,
-			Execute := Execute);
+			Execute := TRUE);
 					]]></ST>
       </Implementation>
     </Method>
@@ -514,6 +513,7 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_GearInDyn">
+      <LineId Id="77" Count="0" />
       <LineId Id="64" Count="1" />
       <LineId Id="53" Count="8" />
       <LineId Id="30" Count="0" />

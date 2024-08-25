@@ -6,7 +6,6 @@
     <Method Name="M_GearInDyn" Id="{08cae4a6-1279-4629-8d1f-651cb9e23d98}">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
 VAR_INPUT
-	Enable    : BOOL;
     GearRatio : LREAL;
     Acceleration : LREAL;
     Deceleration : LREAL;
@@ -19,7 +18,6 @@ END_VAR
     <Method Name="M_GearOut" Id="{9b235f47-b485-44d3-a063-8265da21287e}">
       <Declaration><![CDATA[METHOD M_GearOut : BOOL
 VAR_INPUT
-	Execute : BOOL;
 	Slave : REFERENCE TO AXIS_REF;
 END_VAR
 ]]></Declaration>

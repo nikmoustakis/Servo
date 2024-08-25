@@ -117,18 +117,19 @@ IF Stop_CMD THEN
 END_IF
 
 
-
-Servo.M_GearInDyn(
-					Enable := GearIn_Cmd AND NOT SlaveAxis.Status.Coupled,
+IF GearIn_Cmd THEN
+	Servo.M_GearInDyn(
 					GearRatio    := 2,
 					Acceleration := 100,
 					Deceleration := 100,
 					jerk         := 1000,
 					Slave        := SlaveAxis.P_Axis);
 
+END_IF
 
-Servo.M_GearOut(Execute := GearOut_cmd AND SlaveAxis.Status.Coupled,
-				 Slave := SlaveAxis.P_Axis);
+IF GearOut_Cmd THEN
+	Servo.M_GearOut(Slave := SlaveAxis.P_Axis);
+END_IF
 
 Servo.Status.Coupled;
 SlaveAxis.Status.Coupled;
@@ -208,13 +209,15 @@ Servo.Axis.Status.Operational;
       <LineId Id="309" Count="0" />
       <LineId Id="303" Count="0" />
       <LineId Id="299" Count="0" />
-      <LineId Id="380" Count="0" />
       <LineId Id="304" Count="4" />
       <LineId Id="356" Count="0" />
       <LineId Id="242" Count="0" />
+      <LineId Id="427" Count="0" />
+      <LineId Id="426" Count="0" />
       <LineId Id="362" Count="0" />
-      <LineId Id="425" Count="0" />
-      <LineId Id="365" Count="11" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="428" Count="0" />
+      <LineId Id="366" Count="10" />
       <LineId Id="359" Count="0" />
       <LineId Id="358" Count="0" />
       <LineId Id="241" Count="0" />
