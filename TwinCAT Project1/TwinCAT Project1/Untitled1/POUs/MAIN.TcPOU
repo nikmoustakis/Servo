@@ -22,6 +22,9 @@ VAR
 	GearIn_Cmd    : BOOL;
 	GearOut_Cmd   : BOOL;
 	
+	GearIn        : BOOL;
+	
+	
 	//Reset, Stop Commands
 	
 	RESET_CMD : BOOL;
@@ -112,6 +115,17 @@ IF Stop_CMD THEN
 END_IF
 
 
+IF GearIn THEN 
+Servo.M_GearInDyn(eNABLE := GearIn, 
+					GearRatio := 2,
+					Acceleration := 100,
+					Deceleration := 100,
+					jerk := 1000,
+					SlaveAxis := SlaveAxis.P_Axis);
+					
+					//GearIn := FALSE;
+END_IF
+
 	Mc_GearInDyn(Master := Servo.P_Axis,
 					Slave := SlaveAxis.P_Axis,
 					Enable := GearIn_Cmd,
@@ -181,6 +195,12 @@ Servo.Axis.Status.Operational;
       <LineId Id="128" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="129" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="309" Count="0" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="304" Count="4" />
+      <LineId Id="310" Count="1" />
       <LineId Id="242" Count="0" />
       <LineId Id="241" Count="0" />
       <LineId Id="243" Count="0" />

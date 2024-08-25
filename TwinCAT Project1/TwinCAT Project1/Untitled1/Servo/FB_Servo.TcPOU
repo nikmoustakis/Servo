@@ -117,32 +117,28 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="_M_GearInDyn" Id="{15aaefe6-551b-460c-9291-ea9d7f61f220}" FolderPath="private\Axis Commands\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_GearInDyn : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
+					Slave := SlaveAxis,
+					Enable := Enable,
+					GearRatio := GearRatio,
+					Acceleration := Acceleration,
+					Deceleration := Deceleration,
+					Jerk := Jerk);]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_MoveAbsolute
 
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF Move_Abs_CommaND AND MoveAbsolute.Done THEN
-	//Move_Abs_CommaND := FALSE;
-
-	
-ELSIF Move_Abs_CommaND AND MoveAbsolute.Error OR Axis.Status.Error THEN 
-	//Move_Abs_CommaND := FALSE;
-	
-END_IF
-
-IF Move_Abs_Command AND Axis.Status.Moving THEN 
-	//Move_Abs_Command := FALSE;
-END_IF
-
-IF MoveAbsolute.Busy AND Axis.Status.Stopping THEN 
-	//Move_Abs_Command := FALSE;
-END_IF
-
-IF Move_Abs_Command AND NOT Interlock.SafetyOk THEN 
-	//Move_Abs_Command := FALSE;
-END_IF
+        <ST><![CDATA[
 
 MoveAbsolute(Axis := Axis,
 	Execute := Move_abs_CommaND,
@@ -162,27 +158,7 @@ Move_abs_CommaND := FALSE;]]></ST>
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//IF Move_rel_CommaND AND Move_Relative.Done THEN
-//	Move_rel_CommaND := FALSE;
-	
-	
-//ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
-//	Move_rel_CommaND := FALSE;
-
-//END_IF
-
-//IF Move_rel_CommaND AND Axis.Status.Moving THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-
-//IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-
-//IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-//Move_Rel_Cmd_Trq(CLK := Move_rel_CommaND);
+        <ST><![CDATA[
 Move_Relative(Axis := Axis,
 	Execute := Move_rel_CommaND,
 	Distance := Position, 
@@ -200,27 +176,7 @@ Move_rel_CommaND := FALSE;]]></ST>
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//IF Move_rel_CommaND AND Move_Relative.Done THEN
-//	Move_rel_CommaND := FALSE;
-	
-	
-//ELSIF Move_rel_CommaND AND Move_Relative.Error OR Axis.Status.Error THEN 
-//	Move_rel_CommaND := FALSE;
-
-//END_IF
-
-//IF Move_rel_CommaND AND Axis.Status.Moving THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-
-//IF Move_Relative.Busy AND Axis.Status.Stopping THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-
-//IF Move_rel_CommaND AND NOT Interlock.SafetyOk THEN 
-//	Move_rel_CommaND := FALSE;
-//END_IF
-//Move_Rel_Cmd_Trq(CLK := Move_rel_CommaND);
+        <ST><![CDATA[
 MoveVelocity(Axis := Axis,
 	Execute := Move_Vel_Command,
 	Velocity := Velocity, 
@@ -246,6 +202,30 @@ END_IF
 
 Reset(Axis := Axis, Execute := Reset_Command);
 ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_GearInDyn" Id="{182f26a4-64ea-4bc0-9a99-5e651eb14d69}">
+      <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
+VAR_INPUT
+	Enable     : BOOL;
+    GearRatio : LREAL;
+    Acceleration : LREAL;
+    Deceleration : LREAL;
+    Jerk     : LREAL;
+	
+	SlaveAxis : REFERENCE TO AXIS_REF;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
+					Slave := SlaveAxis,
+					Enable := Enable,
+					GearRatio := GearRatio,
+					Acceleration := Acceleration,
+					Deceleration := Deceleration,
+					Jerk := Jerk);
+					
+					]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}">
@@ -463,19 +443,11 @@ END_VAR
       <LineId Id="26" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Servo._M_GearInDyn">
+      <LineId Id="6" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
-      <LineId Id="34" Count="2" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="47" Count="0" />
-      <LineId Id="49" Count="1" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="65" Count="1" />
-      <LineId Id="64" Count="0" />
-      <LineId Id="59" Count="0" />
-      <LineId Id="58" Count="0" />
-      <LineId Id="60" Count="1" />
-      <LineId Id="52" Count="2" />
       <LineId Id="51" Count="0" />
       <LineId Id="72" Count="6" />
       <LineId Id="71" Count="0" />
@@ -484,43 +456,11 @@ END_VAR
       <LineId Id="83" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveRelative">
-      <LineId Id="34" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="75" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="84" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="70" Count="1" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="65" Count="1" />
-      <LineId Id="64" Count="0" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="58" Count="1" />
       <LineId Id="77" Count="6" />
       <LineId Id="76" Count="0" />
       <LineId Id="88" Count="1" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveVelocity">
-      <LineId Id="34" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="75" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="84" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="70" Count="1" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="65" Count="1" />
-      <LineId Id="64" Count="0" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="58" Count="1" />
       <LineId Id="77" Count="2" />
       <LineId Id="81" Count="2" />
       <LineId Id="76" Count="0" />
@@ -533,6 +473,12 @@ END_VAR
       <LineId Id="24" Count="0" />
       <LineId Id="23" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_GearInDyn">
+      <LineId Id="12" Count="1" />
+      <LineId Id="16" Count="4" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
