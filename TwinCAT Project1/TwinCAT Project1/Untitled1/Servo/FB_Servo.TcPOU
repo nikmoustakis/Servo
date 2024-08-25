@@ -19,6 +19,8 @@ VAR
 	Status             : ST_AxisStatus;
 
 	Axis               : Axis_REF;
+	
+	//Slave          : REFERENCE TO AXIS_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
 	
@@ -59,6 +61,7 @@ _M_AxisPower();
 _M_MoveAbsolute();
 _M_MoveRelative();
 _M_MoveVelocity();
+
 
 
 _M_AxisStop();
@@ -119,17 +122,25 @@ END_IF
     </Method>
     <Method Name="_M_GearInDyn" Id="{15aaefe6-551b-460c-9291-ea9d7f61f220}" FolderPath="private\Axis Commands\">
       <Declaration><![CDATA[METHOD PRIVATE _M_GearInDyn : BOOL
-VAR_INPUT
-END_VAR
+
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
-					Slave := SlaveAxis,
-					Enable := Enable,
-					GearRatio := GearRatio,
-					Acceleration := Acceleration,
-					Deceleration := Deceleration,
-					Jerk := Jerk);]]></ST>
+        <ST><![CDATA[//mc_MoveGearInDyn(Master := Axis,
+//					Slave := Slave,
+//					Enable := GearIn_Dyn_Command,
+//					GearRatio := GearRatio,
+//					Acceleration := Acceleration,
+//					Deceleration := Deceleration,
+//					Jerk := Jerk);
+					
+					
+//IF Axis.Status.Coupled OR Axis.sTATUS.Error OR Slave.Status.Error THEN 
+//	GearIn_Dyn_command := FALSE;
+//END_IF
+					
+					
+					
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\Axis Commands\">
@@ -207,24 +218,51 @@ Reset(Axis := Axis, Execute := Reset_Command);
     <Method Name="M_GearInDyn" Id="{182f26a4-64ea-4bc0-9a99-5e651eb14d69}">
       <Declaration><![CDATA[METHOD M_GearInDyn : BOOL
 VAR_INPUT
-	Enable     : BOOL;
+	Enable    : BOOL;
     GearRatio : LREAL;
     Acceleration : LREAL;
     Deceleration : LREAL;
     Jerk     : LREAL;
 	
-	SlaveAxis : REFERENCE TO AXIS_REF;
+	Slave : REFERENCE TO AXIS_REF;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
-					Slave := SlaveAxis,
+        <ST><![CDATA[
+
+mc_MoveGearInDyn(Master := Axis,
+					Slave := Slave,
 					Enable := Enable,
 					GearRatio := GearRatio,
 					Acceleration := Acceleration,
 					Deceleration := Deceleration,
 					Jerk := Jerk);
 					
+					
+
+
+
+
+
+
+
+					]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_GearOut" Id="{dd7c4642-3c10-4b17-9cb9-913b94304714}">
+      <Declaration><![CDATA[METHOD M_GearOut : BOOL
+VAR_INPUT
+	Execute : BOOL;
+	Slave : REFERENCE TO AXIS_REF;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[mc_MoveGearInDyn(Master := Axis,
+					Slave := Slave,
+					Enable := FALSE);
+
+mc_GearOut(Slave := Slave,
+			Execute := Execute);
 					]]></ST>
       </Implementation>
     </Method>
@@ -415,6 +453,7 @@ END_VAR
       <LineId Id="42" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="141" Count="0" />
+      <LineId Id="205" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
       <LineId Id="94" Count="0" />
@@ -444,8 +483,8 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_GearInDyn">
-      <LineId Id="6" Count="5" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="35" Count="12" />
+      <LineId Id="14" Count="2" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
       <LineId Id="51" Count="0" />
@@ -475,10 +514,22 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_GearInDyn">
-      <LineId Id="12" Count="1" />
-      <LineId Id="16" Count="4" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="53" Count="8" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="1" />
       <LineId Id="15" Count="0" />
       <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.M_GearOut">
+      <LineId Id="27" Count="2" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="6" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
