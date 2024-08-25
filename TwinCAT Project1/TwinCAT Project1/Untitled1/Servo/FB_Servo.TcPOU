@@ -48,8 +48,7 @@ VAR
 	Stop_Command       : BOOL;
 	
 	
-	
-	
+
 	
 END_VAR
 
@@ -88,6 +87,7 @@ _M_ReadWritePositionBias();
 ]]></ST>
     </Implementation>
     <Folder Name="Axis Commands" Id="{96b9d42c-745f-4c05-b8b8-23a6aac5b65a}" />
+    <Folder Name="Functions" Id="{a6a50db9-d2ab-489c-a3c3-428d6ed0819d}" />
     <Folder Name="NC Params" Id="{35cef23b-27f0-4db1-8545-e252215f6b2d}" />
     <Folder Name="private" Id="{15b6f15f-0194-45c7-8f58-722fbfb6d2ab}">
       <Folder Name="Axis Commands" Id="{78eeb960-c4cf-444e-97ea-d87b728c3d73}" />
@@ -226,7 +226,7 @@ Move_Vel_Command := FALSE;]]></ST>
 		END_IF
 	
 	READ_NC:
-		fbReadNC( IDXGRP := 16#00005001, IDXOFFS := 16#00000007, LEN := 8, DESTADDR := ADR(CurrentNCPos), READ := TRUE );
+		fbReadNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, DESTADDR := ADR(CurrentNCPos), READ := TRUE );
 
 		PosBiasState := CALCULATE_NEW;
 		
@@ -238,13 +238,13 @@ Move_Vel_Command := FALSE;]]></ST>
 				NewNCPos := DesiredNCPos - Axis.NcToPlc.ActPos;
 				PosBiasState := WRITE_NC;
 			END_IF
-			
-		ELSIF fbReadNC.ERR THEN 
+		END_IF	
+		IF fbReadNC.ERR THEN 
 			PosBiasState := ERROR;
 		END_IF
 		
 	WRITE_NC:
-		fbWriteNC( IDXGRP := 16#00005001, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(NewNCPos), WRITE := TRUE );
+		fbWriteNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(NewNCPos), WRITE := TRUE );
 
 		PosBiasState := WAIT;
 		
@@ -256,8 +256,8 @@ Move_Vel_Command := FALSE;]]></ST>
 				
 				PosBiasState := IDLE;
 			END_IF
-			
-		ELSIF fbReadNC.ERR THEN 
+		END_IF	
+		IF fbReadNC.ERR THEN 
 			PosBiasState := ERROR;
 		END_IF
 	
