@@ -8,13 +8,18 @@ VAR_INPUT
 	sFileData     : T_MaxString;
 END_VAR
 
+VAR_OUTPUT
+	Done : BOOL;
+	Er : BOOL;
+END_VAR
+
 VAR
     fbFileOpen  : FB_FileOpen;
 
     fbFileWrite : FB_FilePuts;
     fbFileClose : FB_FileClose;
 	
-	FileStates : (IDLE, OPEN, OPENING, WRITE, WRITING, CLOSE, CLOSING);
+	FileStates : (IDLE, OPEN, OPENING, WRITE, WRITING, CLOSE, CLOSING, ERROR);
 	FileState : INT;
 	
 	hFile : UINT;
@@ -31,7 +36,7 @@ END_VAR]]></Declaration>
 	IDLE: 
 		IF bExecuteFile THEN 
 			FileState := OPEN;
-			
+			Done := FALSE;
 		END_IF
 	
 	OPEN: 
@@ -41,12 +46,21 @@ END_VAR]]></Declaration>
 						Filestate := OPENING;
 					END_IF
 					
+					IF fbFileOpen.bError THEN 
+						Filestate := ERROR;
+					END_IF
+					
 	OPENING: 
 		bOpenFile := FALSE;
 					
 					IF NOT fbFileOpen.bBusy AND NOT fbFileOpen.bError THEN 
 						Filestate := WRITE;
 					END_IF
+					
+					IF fbFileOpen.bError THEN 
+						Filestate := ERROR;
+					END_IF
+					
 	
 					
 	WRITE:
@@ -55,6 +69,11 @@ END_VAR]]></Declaration>
 					IF  fbFileWrite.bBusy AND NOT fbFileWrite.bError THEN 
 						Filestate := WRITING;
 					END_IF	
+					
+					
+					IF fbFileWrite.bError THEN 
+						Filestate := ERROR;
+					END_IF
 
 	WRITING:
 		bWriteFile := FALSE;
@@ -62,7 +81,11 @@ END_VAR]]></Declaration>
 					IF NOT fbFileWrite.bBusy AND NOT fbFileWrite.bError THEN 
 						Filestate := CLOSE;
 						fbFileWrite(bExecute := FALSE);
-					END_IF					
+					END_IF	
+
+					IF fbFileWrite.bError THEN 
+						Filestate := ERROR;
+					END_IF				
 	
 	CLOSE:
 		bCloseFile := TRUE;
@@ -70,6 +93,10 @@ END_VAR]]></Declaration>
 					IF  fbFileClose.bBusy AND NOT fbFileClose.bError THEN 
 						Filestate := CLOSING;
 						fbFileClose(bExecute := FALSE);
+					END_IF	
+
+					IF fbFileClose.bError THEN 
+						Filestate := ERROR;
 					END_IF		
 	
 	CLOSING:
@@ -77,8 +104,13 @@ END_VAR]]></Declaration>
 					
 					IF NOT fbFileClose.bBusy AND NOT fbFileClose.bError THEN 
 						Filestate := IDLE;
+						Done := FALSE;
 						fbFileClose(bExecute := FALSE);
-					END_IF				
+					END_IF		
+
+
+	ERROR:
+				
 END_CASE
 
 fbFileOpen(sNetId := '',
@@ -113,8 +145,30 @@ END_VAR
       </Implementation>
     </Method>
     <LineIds Name="FB_WriteToFile">
-      <LineId Id="28" Count="21" />
-      <LineId Id="61" Count="39" />
+      <LineId Id="28" Count="13" />
+      <LineId Id="163" Count="3" />
+      <LineId Id="42" Count="6" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="169" Count="2" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="61" Count="6" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="174" Count="2" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="68" Count="7" />
+      <LineId Id="178" Count="2" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="76" Count="7" />
+      <LineId Id="182" Count="2" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="84" Count="5" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="90" Count="1" />
+      <LineId Id="154" Count="1" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="92" Count="8" />
       <LineId Id="107" Count="9" />
       <LineId Id="9" Count="0" />
       <LineId Id="127" Count="2" />

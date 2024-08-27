@@ -58,7 +58,7 @@ END_VAR
 
 VAR
 	ReadServoJsonState : (IDLE, READ_NC, WRITE_NC, WAIT, ERROR);
-	PosBiasState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WAIT, ERROR);
+	WriteServoJsonState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WRITE_FILE, WAIT, ERROR);
 	SetPosBias   : BOOL;
 	fbReadNC     : ADSREAD := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
 	fbWriteNC    : ADSWRITE := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
@@ -246,6 +246,9 @@ Move_Vel_Command := FALSE;]]></ST>
 		IF fb_ReadJson.Done THEN 
 			JsonNCPos    := fb_ReadJson.fPositionBias;
 			ReadServoJsonState := WRITE_NC;
+			
+		ELSE 
+			ReadServoJsonState := IDLE;
 		END_IF
 		
 		
@@ -278,17 +281,17 @@ END_CASE]]></ST>
       <Declaration><![CDATA[METHOD PRIVATE _M_ReadWritePositionBias : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[CASE PosBiasState OF
+        <ST><![CDATA[CASE WriteServoJsonState OF
 	IDLE: 
-		IF SetPosBias OR Init THEN 
-			PosBiasState := READ_NC;
+		IF SetPosBias  THEN 
+			WriteServoJsonState := READ_NC;
 			SetPosBias := FALSE;
 		END_IF
 	
 	READ_NC:
 		fbReadNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, DESTADDR := ADR(CurrentNCPos), READ := TRUE );
 
-		PosBiasState := CALCULATE_NEW;
+		WriteServoJsonState := CALCULATE_NEW;
 		
 	CALCULATE_NEW:
 		fbReadNC(READ := FALSE);
@@ -296,29 +299,64 @@ END_CASE]]></ST>
 		IF NOT fbReadNC.BUSY THEN
 			IF NOT fbReadNC.ERR THEN 
 				NewNCPos := DesiredNCPos - Axis.NcToPlc.ActPos;
-				PosBiasState := WRITE_NC;
+				WriteServoJsonState := WRITE_NC;
 			END_IF
 		END_IF	
 		IF fbReadNC.ERR THEN 
-			PosBiasState := ERROR;
+			WriteServoJsonState := ERROR;
 		END_IF
 		
 	WRITE_NC:
-		fbWriteNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(NewNCPos), WRITE := TRUE );
-
-		PosBiasState := WAIT;
 		
-	WAIT:
-		fbWriteNC(WRITE := FALSE);
+	
+		fbWriteNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(NewNCPos), WRITE := TRUE );	
+		
 		
 		IF NOT fbWriteNC.BUSY THEN
 			IF NOT fbWriteNC.ERR THEN 
 				
-				PosBiasState := IDLE;
+				WriteServoJsonState := IDLE;
+			END_IF
+		END_IF	
+		IF 	fbWriteNC.ERR THEN 
+			WriteServoJsonState := ERROR;
+		END_IF
+	
+		
+	WRITE_FILE:
+		fbWriteNC(WRITE := FALSE);
+		
+		fb_WriteJson(fPositionBias := NewNCPos);
+		
+		sFilePathName := 'C:\MyJsonFile\';
+		sFilePathName := CONCAT(sFilePathName,ServoConfiguration.Name);
+		sFilePathName := CONCAT(sFilePathName,'.json');
+		
+		fb_WriteToFile(sFilePathName := sFilePathName,sFileData := fb_WriteJson.sJonDoc );
+		
+		IF fb_WriteToFile.Done THEN 
+			WriteServoJsonState := WAIT;
+		END_IF
+		
+		IF fb_WriteToFile.Er THEN 
+			WriteServoJsonState := ERROR;
+		END_IF
+			
+		
+	
+			
+		
+		
+	WAIT:
+		
+		IF NOT fbWriteNC.BUSY THEN
+			IF NOT fbWriteNC.ERR THEN 
+				
+				WriteServoJsonState := IDLE;
 			END_IF
 		END_IF	
 		IF fbReadNC.ERR THEN 
-			PosBiasState := ERROR;
+			WriteServoJsonState := ERROR;
 		END_IF
 	
 	ERROR:
@@ -343,8 +381,8 @@ END_IF
 
 Reset(Axis := Axis, Execute := Reset_Command);
 
-IF PosBiasState = ERROR THEN
-	PosBiasState := IDLE;
+IF WriteServoJsonState = ERROR THEN
+	WriteServoJsonState := IDLE;
 
 END_IF
 ]]></ST>
@@ -669,6 +707,7 @@ END_VAR
       <LineId Id="67" Count="0" />
       <LineId Id="63" Count="1" />
       <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="2" />
       <LineId Id="65" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="34" Count="1" />
@@ -696,9 +735,33 @@ END_VAR
       <LineId Id="28" Count="4" />
       <LineId Id="27" Count="0" />
       <LineId Id="34" Count="1" />
-      <LineId Id="39" Count="2" />
+      <LineId Id="58" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="76" Count="8" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="87" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="98" Count="3" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="72" Count="0" />
       <LineId Id="38" Count="0" />
-      <LineId Id="42" Count="10" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="8" />
       <LineId Id="36" Count="0" />
       <LineId Id="53" Count="3" />
       <LineId Id="22" Count="0" />
