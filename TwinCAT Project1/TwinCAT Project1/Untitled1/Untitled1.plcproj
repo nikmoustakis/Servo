@@ -75,7 +75,16 @@
     <Compile Include="Servo\DUTs\ST_ServoStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Servo\FB_ReadJsonValues.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Servo\FB_Servo.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\FB_WriteJsonValues.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\FB_WriteToFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Servo\GVLs\Param_Servo.TcGVL">
@@ -102,6 +111,7 @@
   <ItemGroup>
     <PlaceholderReference Include="Tc2_MC2">
       <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_MC2</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
@@ -110,6 +120,13 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Utilities">
+      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_JsonXml">
+      <DefaultResolution>Tc3_JsonXml, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_JsonXml</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

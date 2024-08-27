@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_WriteToFile" Id="{600c0e18-e680-46ac-a5bc-cba1e8460828}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_WriteToFile
+
+VAR_INPUT
+	sFilePathName : T_MaxString;
+	sFileData     : T_MaxString;
+END_VAR
+
+VAR
+    fbFileOpen  : FB_FileOpen;
+
+    fbFileWrite : FB_FilePuts;
+    fbFileClose : FB_FileClose;
+	
+	FileStates : (IDLE, OPEN, OPENING, WRITE, WRITING, CLOSE, CLOSING);
+	FileState : INT;
+	
+	hFile : UINT;
+	
+	bExecuteFile: BOOL;
+	bOpenFile: BOOL;
+	
+	bWriteFile: BOOL;
+	bCloseFile: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Filestate OF
+	
+	IDLE: 
+		IF bExecuteFile THEN 
+			FileState := OPEN;
+			
+		END_IF
+	
+	OPEN: 
+		bOpenFile := TRUE;
+					
+					IF  fbFileOpen.bBusy AND NOT fbFileOpen.bError THEN 
+						Filestate := OPENING;
+					END_IF
+					
+	OPENING: 
+		bOpenFile := FALSE;
+					
+					IF NOT fbFileOpen.bBusy AND NOT fbFileOpen.bError THEN 
+						Filestate := WRITE;
+					END_IF
+	
+					
+	WRITE:
+		bWriteFile := TRUE;
+					
+					IF  fbFileWrite.bBusy AND NOT fbFileWrite.bError THEN 
+						Filestate := WRITING;
+					END_IF	
+
+	WRITING:
+		bWriteFile := FALSE;
+					
+					IF NOT fbFileWrite.bBusy AND NOT fbFileWrite.bError THEN 
+						Filestate := CLOSE;
+						fbFileWrite(bExecute := FALSE);
+					END_IF					
+	
+	CLOSE:
+		bCloseFile := TRUE;
+					
+					IF  fbFileClose.bBusy AND NOT fbFileClose.bError THEN 
+						Filestate := CLOSING;
+						fbFileClose(bExecute := FALSE);
+					END_IF		
+	
+	CLOSING:
+		bCloseFile := FALSE;
+					
+					IF NOT fbFileClose.bBusy AND NOT fbFileClose.bError THEN 
+						Filestate := IDLE;
+						fbFileClose(bExecute := FALSE);
+					END_IF				
+END_CASE
+
+fbFileOpen(sNetId := '',
+					sPathName := sFilePathName,
+					nMode := FOPEN_MODEWRITE, //OR FOPEN_MODEPLUS,
+					ePath := E_OpenPath.PATH_GENERIC,
+					tTimeout := DEFAULT_ADS_TIMEOUT,
+					bExecute := bOpenFile,
+					hFile => hFile);				
+					
+fbFileWrite(sNetId     := '',
+    				hFile      := hfile,
+   				   	sLine      := sFileData,
+					tTimeout   := DEFAULT_ADS_TIMEOUT,
+					bExecute   := bWriteFile);
+					
+fbFileClose(sNetId     := '',
+    				hFile      := hfile,
+    				bExecute   := bCloseFile,
+    				tTimeout    := DEFAULT_ADS_TIMEOUT);
+					
+					
+bExecuteFile := FALSE;]]></ST>
+    </Implementation>
+    <Method Name="M_ExecuteWrite" Id="{8ef784f9-5173-4ecf-abc3-76b5191d1fc5}">
+      <Declaration><![CDATA[METHOD M_ExecuteWrite : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bExecuteFile := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_WriteToFile">
+      <LineId Id="28" Count="21" />
+      <LineId Id="61" Count="39" />
+      <LineId Id="107" Count="9" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="127" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_WriteToFile.M_ExecuteWrite">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

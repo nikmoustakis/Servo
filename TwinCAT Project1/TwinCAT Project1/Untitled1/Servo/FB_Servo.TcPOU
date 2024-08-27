@@ -46,13 +46,18 @@ VAR
 	GearIn_Dyn_Command : BOOL;
 	GearOut_Command    : BOOL;
 	Stop_Command       : BOOL;
+	Init               : BOOL := TRUE;
 	
 	
+	fb_WriteJson       : FB_WriteJsonValues;
+	fb_ReadJson        : FB_ReadJsonValues;
+	fb_WriteToFile     : FB_WriteToFile;
 
 	
 END_VAR
 
 VAR
+	ReadServoJsonState : (IDLE, READ_NC, WRITE_NC, WAIT, ERROR);
 	PosBiasState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WAIT, ERROR);
 	SetPosBias   : BOOL;
 	fbReadNC     : ADSREAD := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
@@ -60,6 +65,10 @@ VAR
 	CurrentNCPos        : LREAL;
 	NewNCPos            : LREAL;
 	DesiredNCPos        : LREAL;
+	
+	JsonNCPos           : LREAL;
+	
+	sFilePathName : T_MAXSTRING := 'C:\MyJsonFile.json';
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[_M_AxisStatus();
@@ -79,8 +88,11 @@ _M_AxisStop();
 _M_Reset();
 
 
-
+_M_ReadServoJson();
 _M_ReadWritePositionBias();
+
+
+Init := FALSE;
 
 
 
@@ -214,13 +226,61 @@ MoveVelocity(Axis := Axis,
 Move_Vel_Command := FALSE;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="_M_ReadServoJson" Id="{d16e2cba-8fa2-4d23-8b1b-1ba92e2551cd}" FolderPath="private\NC Params\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_ReadServoJson : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE ReadServoJsonState OF
+	IDLE: 
+		IF Init THEN 
+			ReadServoJsonState := READ_NC;
+		END_IF
+	
+	READ_NC:
+		sFilePathName := 'C:\MyJsonFile\';
+		sFilePathName := CONCAT(sFilePathName,ServoConfiguration.Name);
+		sFilePathName := CONCAT(sFilePathName,'.json');
+		fb_ReadJson(sFilePathName := sFilePathName);
+		fb_ReadJson.M_LoadJsonFile();
+		
+		IF fb_ReadJson.Done THEN 
+			JsonNCPos    := fb_ReadJson.fPositionBias;
+			ReadServoJsonState := WRITE_NC;
+		END_IF
+		
+		
+	WRITE_NC:
+		fbWriteNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(JsonNCPos), WRITE := TRUE );
+
+		ReadServoJsonState := WAIT;
+		
+	WAIT:
+		fbWriteNC(WRITE := FALSE);
+		
+		IF NOT fbWriteNC.BUSY THEN
+			IF NOT fbWriteNC.ERR THEN 
+				
+				ReadServoJsonState := IDLE;
+			END_IF
+		END_IF	
+		IF fbWriteNC.ERR THEN 
+			ReadServoJsonState := ERROR;
+		END_IF
+	
+	ERROR:
+//		fbWriteNC.ERR := FALSE;
+//		fbReadNC.ERR := FALSE;
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="_M_ReadWritePositionBias" Id="{5f590d50-7e02-4b7a-9864-8d9378f50ec5}" FolderPath="private\NC Params\">
       <Declaration><![CDATA[METHOD PRIVATE _M_ReadWritePositionBias : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[CASE PosBiasState OF
 	IDLE: 
-		IF SetPosBias THEN 
+		IF SetPosBias OR Init THEN 
 			PosBiasState := READ_NC;
 			SetPosBias := FALSE;
 		END_IF
@@ -549,7 +609,10 @@ END_VAR
       <LineId Id="35" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="269" Count="2" />
-      <LineId Id="136" Count="2" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="336" Count="1" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="137" Count="1" />
       <LineId Id="135" Count="0" />
       <LineId Id="28" Count="0" />
     </LineIds>
@@ -593,6 +656,29 @@ END_VAR
       <LineId Id="81" Count="2" />
       <LineId Id="76" Count="0" />
       <LineId Id="88" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Servo._M_ReadServoJson">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="59" Count="2" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="42" Count="10" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="53" Count="3" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="11" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_ReadWritePositionBias">
       <LineId Id="5" Count="0" />
