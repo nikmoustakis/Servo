@@ -247,8 +247,8 @@ Move_Vel_Command := FALSE;]]></ST>
 			JsonNCPos    := fb_ReadJson.fPositionBias;
 			ReadServoJsonState := WRITE_NC;
 			
-		ELSE 
-			ReadServoJsonState := IDLE;
+//		ELSE 
+//			ReadServoJsonState := IDLE;
 		END_IF
 		
 		
