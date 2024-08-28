@@ -53,7 +53,7 @@ VAR
 	fb_ReadJson        : FB_ReadJsonValues;
 	fb_WriteToFile     : FB_WriteToFile;
 
-	
+	Timeout : TON:=(PT := T#3S);
 END_VAR
 
 VAR
@@ -228,7 +228,11 @@ Move_Vel_Command := FALSE;]]></ST>
     </Method>
     <Method Name="_M_ReadServoJson" Id="{d16e2cba-8fa2-4d23-8b1b-1ba92e2551cd}" FolderPath="private\NC Params\">
       <Declaration><![CDATA[METHOD PRIVATE _M_ReadServoJson : BOOL
-]]></Declaration>
+
+
+VAR_INST
+	Timeout :  TON:=(PT := T#3S);
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[CASE ReadServoJsonState OF
 	IDLE: 
@@ -243,12 +247,15 @@ Move_Vel_Command := FALSE;]]></ST>
 		fb_ReadJson(sFilePathName := sFilePathName);
 		fb_ReadJson.M_LoadJsonFile();
 		
+		Timeout(IN := TRUE);
+		
 		IF fb_ReadJson.Done THEN 
 			JsonNCPos    := fb_ReadJson.fPositionBias;
 			ReadServoJsonState := WRITE_NC;
 			
-//		ELSE 
-//			ReadServoJsonState := IDLE;
+		ELSIF Timeout.Q THEN  
+			ReadServoJsonState := IDLE;
+			Timeout(IN := FALSE);
 		END_IF
 		
 		
@@ -256,7 +263,7 @@ Move_Vel_Command := FALSE;]]></ST>
 		fbWriteNC( IDXGRP := 20480 + Axis.NcToPlc.AxisId, IDXOFFS := 16#00000007, LEN := 8, SRCADDR  := ADR(JsonNCPos), WRITE := TRUE );
 
 		ReadServoJsonState := WAIT;
-		
+		Timeout(IN := FALSE);
 	WAIT:
 		fbWriteNC(WRITE := FALSE);
 		
@@ -315,7 +322,7 @@ END_CASE]]></ST>
 		IF NOT fbWriteNC.BUSY THEN
 			IF NOT fbWriteNC.ERR THEN 
 				
-				WriteServoJsonState := IDLE;
+				WriteServoJsonState := WRITE_FILE;
 			END_IF
 		END_IF	
 		IF 	fbWriteNC.ERR THEN 
@@ -326,14 +333,16 @@ END_CASE]]></ST>
 	WRITE_FILE:
 		fbWriteNC(WRITE := FALSE);
 		
+		fb_WriteJson.M_WriteJsonFile();
 		fb_WriteJson(fPositionBias := NewNCPos);
+		
 		
 		sFilePathName := 'C:\MyJsonFile\';
 		sFilePathName := CONCAT(sFilePathName,ServoConfiguration.Name);
 		sFilePathName := CONCAT(sFilePathName,'.json');
 		
 		fb_WriteToFile(sFilePathName := sFilePathName,sFileData := fb_WriteJson.sJonDoc );
-		
+		fb_WriteToFile.M_ExecuteWrite();
 		IF fb_WriteToFile.Done THEN 
 			WriteServoJsonState := WAIT;
 		END_IF
@@ -704,10 +713,12 @@ END_VAR
       <LineId Id="59" Count="2" />
       <LineId Id="12" Count="0" />
       <LineId Id="62" Count="0" />
+      <LineId Id="75" Count="1" />
       <LineId Id="67" Count="0" />
       <LineId Id="63" Count="1" />
       <LineId Id="66" Count="0" />
       <LineId Id="68" Count="2" />
+      <LineId Id="77" Count="0" />
       <LineId Id="65" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="34" Count="1" />
@@ -743,7 +754,9 @@ END_VAR
       <LineId Id="74" Count="0" />
       <LineId Id="85" Count="0" />
       <LineId Id="87" Count="2" />
+      <LineId Id="103" Count="0" />
       <LineId Id="40" Count="0" />
+      <LineId Id="102" Count="0" />
       <LineId Id="60" Count="0" />
       <LineId Id="68" Count="1" />
       <LineId Id="67" Count="0" />

@@ -104,7 +104,7 @@ END_VAR]]></Declaration>
 					
 					IF NOT fbFileClose.bBusy AND NOT fbFileClose.bError THEN 
 						Filestate := IDLE;
-						Done := FALSE;
+						Done := TRUE;
 						fbFileClose(bExecute := FALSE);
 					END_IF		
 
