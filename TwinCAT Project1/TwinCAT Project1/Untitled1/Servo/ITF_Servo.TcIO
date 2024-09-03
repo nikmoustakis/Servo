@@ -99,19 +99,19 @@ END_VAR
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
+    <Property Name="P_JogCommand" Id="{1273a58f-2dc7-49b5-9bc7-d2673b6ff7e9}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_JogCommand : REFERENCE TO ST_JogCommands]]></Declaration>
+      <Get Name="Get" Id="{e7be9fd5-9f06-4e41-b17d-6b1d35c70798}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Property Name="P_ServoConfiguration" Id="{c9b4820d-12d6-4620-8f9f-a8fdff887ca3}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
 PROPERTY P_ServoConfiguration : REFERENCE TO ST_ServoConfiguration]]></Declaration>
       <Get Name="Get" Id="{75fd9b35-bc46-4fe7-a4bd-6325babebd0c}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Get>
-    </Property>
-    <Property Name="P_Status" Id="{1273a58f-2dc7-49b5-9bc7-d2673b6ff7e9}">
-      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
-{attribute 'suppress_wrn_C0410'}
-PROPERTY P_Status : REFERENCE TO ST_ServoStatus]]></Declaration>
-      <Get Name="Get" Id="{e7be9fd5-9f06-4e41-b17d-6b1d35c70798}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>

@@ -16,14 +16,14 @@ VAR
 	Reset         	   : MC_Reset;
 	ReadStatus    	   : MC_READSTATUS;
 	Stop          	   : MC_STOP;
-	mc_Jog                : MC_JOG;
+	mc_Jog             : MC_JOG;
 	Home               : MC_HOME;
 	Status             : ST_AxisStatus;
 
 	Axis               : Axis_REF;
 	
 	JogAxis            : ST_JogAxisMove;
-	JogCommands        : ST_JogCommands;
+	JogCommand         : ST_JogCommands;
 	//Slave          : REFERENCE TO AXIS_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
@@ -187,10 +187,10 @@ END_VAR
         <ST><![CDATA[Jog_Forward_Cmd   := FALSE;
 Jog_Backwards_Cmd := FALSE;
 
-IF P_JogAxis.JogForward THEN 
+IF JogCommand.JogForward THEN 
 	Jog_Forward_Cmd   :=TRUE;
 	Jog_Backwards_Cmd := FALSE;
-ELSIF P_JogAxis.JogBackwards THEN
+ELSIF JogCommand.JogBackwards THEN
 	Jog_Forward_Cmd   :=FALSE;
 	Jog_Backwards_Cmd := TRUE;
 END_IF
@@ -668,14 +668,14 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="P_JogAxis" Id="{9c30aea2-d417-4439-84bf-f1380c1df15e}">
-      <Declaration><![CDATA[PROPERTY P_JogAxis : REFERENCE TO ST_JogCommands]]></Declaration>
+    <Property Name="P_JogCommand" Id="{9c30aea2-d417-4439-84bf-f1380c1df15e}">
+      <Declaration><![CDATA[PROPERTY P_JogCommand : REFERENCE TO ST_JogCommands]]></Declaration>
       <Get Name="Get" Id="{82140d78-cf74-4ea0-9cf8-d3fc335d3c13}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[P_JogAxis REF= JogCommands;]]></ST>
+          <ST><![CDATA[P_JogCommand REF= JogCommand;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -689,19 +689,6 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[P_ServoConfiguration REF= ServoConfiguration;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="P_Status" Id="{283de251-f33b-471c-ac47-084507ccff39}">
-      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
-{attribute 'suppress_wrn_C0410'}
-PROPERTY P_Status : REFERENCE TO ST_ServoStatus]]></Declaration>
-      <Get Name="Get" Id="{84ec4f21-ab55-4d24-8893-655d005e00fd}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -948,13 +935,10 @@ END_VAR
     <LineIds Name="FB_Servo.P_Interlock.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Servo.P_JogAxis.Get">
+    <LineIds Name="FB_Servo.P_JogCommand.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_ServoConfiguration.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Servo.P_Status.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

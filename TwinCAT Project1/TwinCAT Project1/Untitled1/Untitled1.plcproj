@@ -75,9 +75,6 @@
     <Compile Include="Servo\DUTs\ST_JogAxisMove.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Servo\DUTs\ST_ServoStatus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Servo\FB_ReadJsonValues.TcPOU">
       <SubType>Code</SubType>
     </Compile>
