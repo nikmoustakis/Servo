@@ -60,6 +60,9 @@
     <Compile Include="Servo\DUTs\E_ServoTypeMoves.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Servo\DUTs\ST_JogCommands.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Servo\DUTs\ST_ServoAxisMove.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -69,7 +72,7 @@
     <Compile Include="Servo\DUTs\ST_ServoInterlocks.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Servo\DUTs\ST_ServoMove.TcDUT">
+    <Compile Include="Servo\DUTs\ST_JogAxisMove.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Servo\DUTs\ST_ServoStatus.TcDUT">

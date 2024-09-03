@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_JogAxisMove" Id="{9a4051d5-0a8d-46c1-bb2d-34723daa6dfb}">
+    <Declaration><![CDATA[TYPE ST_JogAxisMove :
+STRUCT
+    Mode         : E_JogMode := E_JogMode.MC_JOGMODE_CONTINOUS;
+    Position     : LREAL;
+    Velocity     : LREAL;
+    Acceleration : LREAL;
+    Deceleration : LREAL;
+    Jerk         : LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

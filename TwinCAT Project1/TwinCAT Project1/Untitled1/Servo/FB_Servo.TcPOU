@@ -16,10 +16,14 @@ VAR
 	Reset         	   : MC_Reset;
 	ReadStatus    	   : MC_READSTATUS;
 	Stop          	   : MC_STOP;
+	mc_Jog                : MC_JOG;
+	Home               : MC_HOME;
 	Status             : ST_AxisStatus;
 
 	Axis               : Axis_REF;
 	
+	JogAxis            : ST_JogAxisMove;
+	JogCommands        : ST_JogCommands;
 	//Slave          : REFERENCE TO AXIS_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
@@ -29,6 +33,7 @@ VAR
 	Acceleration       : LREAL;
 	Deceleration       : LREAL;
 	Jerk               : LREAL;
+	JogMode            : E_JogMode;
 	
     GearRatio          : LREAL;
    
@@ -46,6 +51,9 @@ VAR
 	GearIn_Dyn_Command : BOOL;
 	GearOut_Command    : BOOL;
 	Stop_Command       : BOOL;
+	
+	Jog_Forward_Cmd    : BOOL;
+	Jog_Backwards_Cmd  : BOOL;
 	Init               : BOOL := TRUE;
 	
 	
@@ -78,8 +86,7 @@ _M_MoveAbsolute();
 _M_MoveRelative();
 _M_MoveVelocity();
 
-
-
+_M_Jog();
 
 
 _M_AxisStop();
@@ -169,6 +176,36 @@ END_IF
 					
 					
 ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="_M_Jog" Id="{5f2e7d28-0d7b-4c3b-a2af-ccfae4ba6313}" FolderPath="private\Axis Commands\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_Jog : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Jog_Forward_Cmd   := FALSE;
+Jog_Backwards_Cmd := FALSE;
+
+IF P_JogAxis.JogForward THEN 
+	Jog_Forward_Cmd   :=TRUE;
+	Jog_Backwards_Cmd := FALSE;
+ELSIF P_JogAxis.JogBackwards THEN
+	Jog_Forward_Cmd   :=FALSE;
+	Jog_Backwards_Cmd := TRUE;
+END_IF
+
+
+
+mc_Jog(Axis := Axis,
+			Jogbackwards := Jog_Backwards_Cmd,
+			JogForward   := Jog_Forward_Cmd,
+			Mode         := JogMode,
+			Position     := Position,
+			Velocity     := Velocity,
+			Acceleration := Acceleration,
+			Deceleration := Deceleration,
+			jerk         := Jerk);]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_MoveAbsolute" Id="{255f90ca-2a73-42d8-a8c4-38d18a1625bc}" FolderPath="private\Axis Commands\">
@@ -456,6 +493,23 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_Jog" Id="{07b34e1b-95f8-4d09-b936-5813d991ce4d}" FolderPath="Axis Commands\">
+      <Declaration><![CDATA[METHOD M_Jog : BOOL
+VAR_INPUT
+	JogAxisMove : ST_JogAxisMove;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.Position := JogAxisMove.Position;
+THIS^.Velocity := JogAxisMove.Velocity;
+THIS^.Acceleration := JogAxisMove.Acceleration;
+THIS^.Deceleration:= JogAxisMove.Deceleration;
+THIS^.jerk:= JogAxisMove.jerk;  
+THIS^.JogMode := JogAxisMove.Mode;
+
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_Move" Id="{1b1758bd-f1b3-469b-ad89-131305a562c1}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Move : BOOL
 VAR_INPUT
@@ -614,6 +668,17 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Property Name="P_JogAxis" Id="{9c30aea2-d417-4439-84bf-f1380c1df15e}">
+      <Declaration><![CDATA[PROPERTY P_JogAxis : REFERENCE TO ST_JogCommands]]></Declaration>
+      <Get Name="Get" Id="{82140d78-cf74-4ea0-9cf8-d3fc335d3c13}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_JogAxis REF= JogCommands;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="P_ServoConfiguration" Id="{89be2535-ea79-46a9-a08b-49598bb78a70}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
@@ -648,7 +713,6 @@ END_VAR
       <LineId Id="141" Count="0" />
       <LineId Id="268" Count="0" />
       <LineId Id="267" Count="0" />
-      <LineId Id="205" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
       <LineId Id="94" Count="0" />
@@ -684,6 +748,16 @@ END_VAR
     <LineIds Name="FB_Servo._M_GearInDyn">
       <LineId Id="35" Count="12" />
       <LineId Id="14" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_Servo._M_Jog">
+      <LineId Id="34" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="28" Count="3" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="17" Count="10" />
+      <LineId Id="16" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_MoveAbsolute">
       <LineId Id="51" Count="0" />
@@ -814,6 +888,13 @@ END_VAR
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Servo.M_Jog">
+      <LineId Id="12" Count="3" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Servo.M_Move">
       <LineId Id="12" Count="3" />
       <LineId Id="9" Count="2" />
@@ -865,6 +946,9 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_Interlock.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_JogAxis.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_ServoConfiguration.Get">
