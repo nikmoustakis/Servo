@@ -29,8 +29,8 @@ VAR_INPUT
     Position        : LREAL         := DEFAULT_HOME_POSITION;
     HomingMode      : MC_HomingMode;
     
-    Options         : ST_HomingOptions;
-    bCalibrationCam : BOOL; 
+   // Options         : ST_HomingOptions;
+   
 END_VAR
 ]]></Declaration>
     </Method>

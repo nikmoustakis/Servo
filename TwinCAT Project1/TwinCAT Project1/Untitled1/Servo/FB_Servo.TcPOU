@@ -194,7 +194,6 @@ mc_Home(Axis := Axis,
 		Execute := Home_Command,
 		Position := Position,
 		HomingMode := HomingMode,
-		Options    := HomingOptions,
 		bCalibrationCam := Inputs.CalibrationCam);
 
 	
@@ -513,14 +512,14 @@ mc_GearOut(Slave := Slave,
 VAR_INPUT
     Position        : LREAL         := DEFAULT_HOME_POSITION;
     HomingMode      : MC_HomingMode;
-    Options         : ST_HomingOptions;
-    bCalibrationCam : BOOL; 
+    //Options         : ST_HomingOptions;
+
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[THIS^.Position      := Position;
 THIS^.HomingMode    := HomingMode;
-THIS^.HomingOptions := Options;
+//THIS^.HomingOptions := Options;
 
 Home_Command := TRUE;
 
@@ -774,7 +773,8 @@ END_VAR
     <LineIds Name="FB_Servo._M_Home">
       <LineId Id="51" Count="0" />
       <LineId Id="91" Count="0" />
-      <LineId Id="93" Count="4" />
+      <LineId Id="93" Count="2" />
+      <LineId Id="97" Count="0" />
       <LineId Id="71" Count="0" />
       <LineId Id="82" Count="0" />
       <LineId Id="84" Count="0" />

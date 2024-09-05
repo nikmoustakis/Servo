@@ -18,6 +18,9 @@ VAR
 	
 	GoVel_Cmd       : BOOL;
 	
+	Home_Cmd        : BOOL;
+	HomingMode      : MC_HomingMode;
+	
 	Jog_For         : BOOL;
 	Jog_Bck        : BOOL;
 	
@@ -142,6 +145,11 @@ IF Stop_CMD THEN
 	Stop_CMD := FALSE;
 END_IF
 
+IF Home_Cmd THEN 
+	Servo.M_Home(Position := 0, HomingMode := HomingMode);
+	Home_Cmd := FALSE; 
+END_IF
+
 
 IF GearIn_Cmd THEN
 	Servo.M_GearInDyn(
@@ -192,7 +200,13 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="760" Count="129" />
+      <LineId Id="760" Count="81" />
+      <LineId Id="893" Count="0" />
+      <LineId Id="892" Count="0" />
+      <LineId Id="894" Count="0" />
+      <LineId Id="897" Count="0" />
+      <LineId Id="895" Count="0" />
+      <LineId Id="842" Count="47" />
       <LineId Id="23" Count="0" />
     </LineIds>
   </POU>
