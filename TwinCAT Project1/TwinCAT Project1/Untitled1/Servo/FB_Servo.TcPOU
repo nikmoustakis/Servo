@@ -19,7 +19,7 @@ VAR
 	ReadStatus    	   : MC_READSTATUS;
 	Stop          	   : MC_STOP;
 	mc_Jog             : MC_JOG;
-	Home               : MC_HOME;
+	mc_Home            : MC_HOME;
 	Status             : ST_AxisStatus;
 
 	Axis               : Axis_REF;
@@ -29,7 +29,8 @@ VAR
 	//Slave          : REFERENCE TO AXIS_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
-	
+	HomingMode         : MC_HomingMode;
+	HomingOptions      : ST_HomingOptions;        
 	Position           : LREAL;
 	Velocity           : LREAL;
 	Acceleration       : LREAL;
@@ -90,6 +91,7 @@ _M_MoveRelative();
 _M_MoveVelocity();
 
 _M_Jog();
+_M_Home();
 
 
 _M_AxisStop();
@@ -179,6 +181,25 @@ END_IF
 					
 					
 ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="_M_Home" Id="{02c49fb2-c719-44c8-a2f6-62c670cb4437}" FolderPath="private\Axis Commands\">
+      <Declaration><![CDATA[METHOD PRIVATE _M_Home
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+mc_Home(Axis := Axis,
+		Execute := Home_Command,
+		Position := Position,
+		HomingMode := HomingMode,
+		Options    := HomingOptions,
+		bCalibrationCam := Inputs.CalibrationCam);
+
+	
+
+Home_Command := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_Jog" Id="{5f2e7d28-0d7b-4c3b-a2af-ccfae4ba6313}" FolderPath="private\Axis Commands\">
@@ -497,7 +518,13 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[THIS^.Position      := Position;
+THIS^.HomingMode    := HomingMode;
+THIS^.HomingOptions := Options;
+
+Home_Command := TRUE;
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Jog" Id="{07b34e1b-95f8-4d09-b936-5813d991ce4d}" FolderPath="Axis Commands\">
@@ -707,6 +734,7 @@ END_VAR
       <LineId Id="141" Count="0" />
       <LineId Id="268" Count="0" />
       <LineId Id="267" Count="0" />
+      <LineId Id="418" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
       <LineId Id="94" Count="0" />
@@ -742,6 +770,15 @@ END_VAR
     <LineIds Name="FB_Servo._M_GearInDyn">
       <LineId Id="35" Count="12" />
       <LineId Id="14" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_Servo._M_Home">
+      <LineId Id="51" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="93" Count="4" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="83" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_Jog">
       <LineId Id="34" Count="0" />
@@ -881,6 +918,11 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Servo.M_Home">
       <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.M_Jog">
       <LineId Id="12" Count="3" />
