@@ -7,6 +7,8 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	
+	Inputs 		       : ST_Inputs;
 	Power         	   : MC_POWER;
 	MoveAbsolute  	   : MC_MoveAbsolute;
 	Move_Relative 	   : MC_MoveRelative;
@@ -51,6 +53,7 @@ VAR
 	GearIn_Dyn_Command : BOOL;
 	GearOut_Command    : BOOL;
 	Stop_Command       : BOOL;
+	Home_Command       : BOOL;
 	
 	Jog_Forward_Cmd    : BOOL;
 	Jog_Backwards_Cmd  : BOOL;
@@ -487,6 +490,10 @@ mc_GearOut(Slave := Slave,
     <Method Name="M_Home" Id="{b40c55ab-b0e8-45fb-a160-49ce02942882}" FolderPath="Axis Commands\">
       <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
+    Position        : LREAL         := DEFAULT_HOME_POSITION;
+    HomingMode      : MC_HomingMode;
+    Options         : ST_HomingOptions;
+    bCalibrationCam : BOOL; 
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -524,11 +531,11 @@ THIS^.Deceleration:= ServoAxisMove.Deceleration;
 THIS^.jerk:= ServoAxisMove.jerk;  
 
 
-IF (ServoAxisMove.MotionType = E_ServoTypeMoves.AbsoluteMove) THEN 
+IF (ServoAxisMove.MotionType = E_ServoMotionType.AbsoluteMove) THEN 
 	Move_Abs_Command := TRUE;
-ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.RelativeMove) THEN 
+ELSIF (ServoAxisMove.MotionType = E_ServoMotionType.RelativeMove) THEN 
 	Move_Rel_Command := TRUE;
-ELSIF (ServoAxisMove.MotionType = E_ServoTypeMoves.VelocityMove) THEN 
+ELSIF (ServoAxisMove.MotionType = E_ServoMotionType.VelocityMove) THEN 
 	Move_Vel_Command := TRUE;
 END_IF]]></ST>
       </Implementation>

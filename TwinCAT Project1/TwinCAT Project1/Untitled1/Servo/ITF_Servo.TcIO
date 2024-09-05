@@ -25,6 +25,12 @@ END_VAR
     <Method Name="M_Home" Id="{c52db2e8-1431-4f43-b4bf-e0e5d12b988f}">
       <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
+	
+    Position        : LREAL         := DEFAULT_HOME_POSITION;
+    HomingMode      : MC_HomingMode;
+    
+    Options         : ST_HomingOptions;
+    bCalibrationCam : BOOL; 
 END_VAR
 ]]></Declaration>
     </Method>

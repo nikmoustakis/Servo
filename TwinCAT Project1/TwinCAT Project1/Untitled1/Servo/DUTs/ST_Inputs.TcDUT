@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_Inputs" Id="{a8d8dd16-b59b-467e-8b3d-d6bc677ec109}">
+    <Declaration><![CDATA[TYPE ST_Inputs :
+STRUCT
+	CalibrationCam   AT %I*: BOOL; //Reflects the signal of a referencing cam that may enter the controller during home
+	SS1_Active       AT %I*: BOOL; //Reflects safety SS1 is TRUE e.g. command to stop axis
+	SLS_Active       AT %I*: BOOL; //Reflects safety SLS is TRUE
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -57,7 +57,10 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Servo\DUTs\E_ServoTypeMoves.TcDUT">
+    <Compile Include="Servo\DUTs\E_ServoMotionType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Servo\DUTs\ST_Inputs.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Servo\DUTs\ST_JogCommands.TcDUT">

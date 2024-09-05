@@ -3,12 +3,13 @@
   <DUT Name="ST_ServoAxisMove" Id="{0780d237-aa31-4a36-9893-1a91f311c031}">
     <Declaration><![CDATA[TYPE ST_ServoAxisMove :
 STRUCT
-	MotionType : E_ServoTypeMoves;
-	Position : LREAL;
-	Velocity : LREAL;
-	Acceleration : LREAL;
-	Deceleration: LREAL;
-	jerk: LREAL;
+	MotionType    : E_ServoMotionType;
+	Position      : LREAL;
+	Velocity      : LREAL;
+	Acceleration  : LREAL;
+	Deceleration  : LREAL;
+	jerk          : LREAL;
+	BufferMode    : MC_BufferMode;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

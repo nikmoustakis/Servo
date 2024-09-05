@@ -93,7 +93,7 @@ ServoAxisMove_Abs.Deceleration := 1000;
 ServoAxisMove_Abs.jerk         := 10000;
 ServoAxisMove_Abs.Position     := Abs_Pos;
 ServoAxisMove_Abs.Velocity     := Vel;
-ServoAxisMove_Abs.MotionType   := E_ServoTypeMoves.AbsoluteMove;
+ServoAxisMove_Abs.MotionType   := E_ServoMotionType.AbsoluteMove;
 
 //Servo Relative Motion Configuration
 ServoAxisMove_Rel.Acceleration := 1000;
@@ -101,14 +101,14 @@ ServoAxisMove_Rel.Deceleration := 1000;
 ServoAxisMove_Rel.jerk         := 10000;
 ServoAxisMove_Rel.Position     :=Pos;
 ServoAxisMove_Rel.Velocity     := Vel;
-ServoAxisMove_Rel.MotionType   := E_ServoTypeMoves.RelativeMove;
+ServoAxisMove_Rel.MotionType   := E_ServoMotionType.RelativeMove;
 
 //Servo Velocity Motion Configuration
 ServoAxisMove_Vel.Acceleration := 15000;
 ServoAxisMove_Vel.Deceleration := 15000;
 ServoAxisMove_Vel.jerk         := 50000;
 ServoAxisMove_Vel.Velocity     := Vel;
-ServoAxisMove_Vel.MotionType   := E_ServoTypeMoves.VelocityMove;
+ServoAxisMove_Vel.MotionType   := E_ServoMotionType.VelocityMove;
 
 
 IF GoPosAbs_Cmd THEN 
@@ -192,10 +192,7 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="568" Count="21" />
-      <LineId Id="703" Count="0" />
-      <LineId Id="590" Count="0" />
-      <LineId Id="597" Count="105" />
+      <LineId Id="760" Count="129" />
       <LineId Id="23" Count="0" />
     </LineIds>
   </POU>
