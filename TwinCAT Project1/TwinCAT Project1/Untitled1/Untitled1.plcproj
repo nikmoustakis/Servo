@@ -58,16 +58,7 @@
     <Compile Include="Servo\DUTs\ST_JogAxisMove.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Servo\FB_ReadJsonValues.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Servo\FB_Servo.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Servo\FB_WriteJsonValues.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Servo\FB_WriteToFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Servo\GVLs\Param_Servo.TcGVL">
@@ -93,6 +84,10 @@
     <PlaceholderReference Include="Error">
       <DefaultResolution>Error, * (NM)</DefaultResolution>
       <Namespace>Error</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="JsonParser">
+      <DefaultResolution>JsonParser, * (NM)</DefaultResolution>
+      <Namespace>JsonParser</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_MC2">
       <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
@@ -127,6 +122,9 @@
   <ItemGroup>
     <PlaceholderResolution Include="Error">
       <Resolution>Error, 1.0.0.4 (NM)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="JsonParser">
+      <Resolution>JsonParser, 1.0.0.1 (NM)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc2_Math">
       <Resolution>Tc2_Math, 3.3.1.0 (Beckhoff Automation GmbH)</Resolution>
