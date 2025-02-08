@@ -4,7 +4,7 @@
     <Declaration><![CDATA[TYPE ST_ServoConfiguration :
 STRUCT
 	Name : STRING(Param_Servo.DESCRIPTION_LEN) := 'Servo'; //Name visualized on UI
-	DeviceType : STRING := 'Servo';      //TRUE if advanced state feedback is used  
+	DeviceType : STRING := 'Servo';      //Device type; Servo by default 
 END_STRUCT
 END_TYPE
 ]]></Declaration>

@@ -17,7 +17,7 @@
     <Implicit_Jitter_Distribution>{1a36d96f-6c8e-46ce-b55d-fb2c90a96575}</Implicit_Jitter_Distribution>
     <LibraryReferences>{bbaf044d-9a65-403c-9427-1f34f96172db}</LibraryReferences>
     <Company>NM</Company>
-    <Released>true</Released>
+    <Released>false</Released>
     <Title>Servo</Title>
     <ProjectVersion>1.0.0.1</ProjectVersion>
   </PropertyGroup>
@@ -109,6 +109,9 @@
     <PlaceholderReference Include="JsonParser">
       <DefaultResolution>JsonParser, * (NM)</DefaultResolution>
       <Namespace>JsonParser</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Servo">
+      <DefaultResolution>Servo, * (NM)</DefaultResolution>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_MC2">
       <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
