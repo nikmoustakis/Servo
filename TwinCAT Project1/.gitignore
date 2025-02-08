@@ -1,0 +1,35 @@
+# TwinCAT
+*.tpy
+*.tclrs
+#*.compiled-library
+*.compileinfo
+*.tmcRefac
+#*.library
+*.project.~u
+*.tsproj.bak
+*.xti.bak
+LineIDs.dbg.bak
+LineIDs.dbg
+_Boot/
+_CompileInfo/
+_Libraries/
+_ModuleInstall/
+.vs/
+
+
+
+# TwinCAT HMI
+.engineering_servers/
+liveview_*
+*.cache
+*.db-shm
+*.db-wal
+*.pid
+.hmiframework/
+.hmipkgs/*-*-*-*/
+tchmipublish.journal.json
+*.suo
+*/v15/.suo
+*.logger.db
+*.logger.db-journal
+*.lock

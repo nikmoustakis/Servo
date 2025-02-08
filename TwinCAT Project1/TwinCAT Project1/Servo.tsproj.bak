@@ -1762,7 +1762,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{E6812467-EA88-4743-BE0C-FD8A2034AF69}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{5A5CFB6D-BC73-AC09-E511-7F21BC2C3CD5}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{F2B983BD-011A-BCC0-3BC5-E7B7B1B81896}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1772,8 +1772,38 @@ External Setpoint Generation:
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.Servo.Inputs.CalibrationCam</Name>
+							<Comment><![CDATA[Reflects the signal of a referencing cam that may enter the controller during home]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Servo.Inputs.SS1_Active</Name>
+							<Comment><![CDATA[Reflects safety SS1 is TRUE e.g. command to stop axis]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Servo.Inputs.SLS_Active</Name>
+							<Comment><![CDATA[Reflects safety SLS is TRUE]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.SlaveAxis.Axis.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.SlaveAxis.Inputs.CalibrationCam</Name>
+							<Comment><![CDATA[Reflects the signal of a referencing cam that may enter the controller during home]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.SlaveAxis.Inputs.SS1_Active</Name>
+							<Comment><![CDATA[Reflects safety SS1 is TRUE e.g. command to stop axis]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.SlaveAxis.Inputs.SLS_Active</Name>
+							<Comment><![CDATA[Reflects safety SLS is TRUE]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">

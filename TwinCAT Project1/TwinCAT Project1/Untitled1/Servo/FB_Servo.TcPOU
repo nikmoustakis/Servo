@@ -7,8 +7,8 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	
-	Inputs 		       : ST_Inputs;
+	Axis               : Axis_REF;
+
 	Power         	   : MC_POWER;
 	MoveAbsolute  	   : MC_MoveAbsolute;
 	Move_Relative 	   : MC_MoveRelative;
@@ -20,17 +20,23 @@ VAR
 	Stop          	   : MC_STOP;
 	mc_Jog             : MC_JOG;
 	mc_Home            : MC_HOME;
-	Status             : ST_AxisStatus;
 
-	Axis               : Axis_REF;
+	Error              : ST_Error;
 	
-	JogAxis            : ST_JogAxisMove;
+	Inputs 		       : ST_Inputs;
+	ControlMode        : ST_ControlMode;
+    JogAxis            : ST_JogAxisMove;
 	JogCommand         : ST_JogCommands;
-	//Slave          : REFERENCE TO AXIS_REF;
 	Interlock          : ST_ServoInterlocks;
 	ServoConfiguration : ST_ServoConfiguration;
+	Status             : ST_AxisStatus;
+	HomingOptions      : ST_HomingOptions;  
+	ServoAxisMove      : ST_ServoAxisMove;
+
+	//Slave          : REFERENCE TO AXIS_REF;
+
 	HomingMode         : MC_HomingMode;
-	HomingOptions      : ST_HomingOptions;        
+	       
 	Position           : LREAL;
 	Velocity           : LREAL;
 	Acceleration       : LREAL;
@@ -44,7 +50,7 @@ VAR
 	Stop_Decel         : LREAL;
 	Stop_Jerk          : LREAL;
 	
-	ServoAxisMove      : ST_ServoAxisMove;
+	
 	
 	//Commands
 	Reset_Command      : BOOL;
@@ -93,12 +99,9 @@ _M_MoveVelocity();
 _M_Jog();
 _M_Home();
 
-
 _M_AxisStop();
 
-
 _M_Reset();
-
 
 _M_ReadServoJson();
 _M_ReadWritePositionBias();
@@ -414,7 +417,7 @@ END_CASE]]></ST>
 		
 	
 			
-		
+
 		
 	WAIT:
 		
@@ -690,6 +693,19 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Property Name="P_ControlMode" Id="{ca9803a6-de60-4a26-a9a4-ae4791f93c82}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY P_ControlMode : REFERENCE TO ST_ControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{9d532be1-f6b9-44b0-a9ae-c4c5c2aba129}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_ControlMode REF= ControlMode;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="P_Interlock" Id="{b3fa0a65-d5ac-4046-8889-1c58225764a2}">
       <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
       <Get Name="Get" Id="{478cde43-792e-4109-8177-e24dafa2cddd}">
@@ -734,13 +750,11 @@ END_VAR
       <LineId Id="268" Count="0" />
       <LineId Id="267" Count="0" />
       <LineId Id="418" Count="0" />
-      <LineId Id="154" Count="0" />
       <LineId Id="150" Count="0" />
       <LineId Id="94" Count="0" />
-      <LineId Id="16" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="29" Count="0" />
-      <LineId Id="269" Count="2" />
+      <LineId Id="270" Count="1" />
       <LineId Id="136" Count="0" />
       <LineId Id="336" Count="1" />
       <LineId Id="335" Count="0" />
@@ -979,6 +993,9 @@ END_VAR
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_Axis.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_ControlMode.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_Interlock.Get">
