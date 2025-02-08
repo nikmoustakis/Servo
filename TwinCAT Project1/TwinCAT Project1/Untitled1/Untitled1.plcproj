@@ -16,6 +16,10 @@
     <Implicit_KindOfTask>{b425a72c-6e0b-424a-8177-f66366cafee2}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{1a36d96f-6c8e-46ce-b55d-fb2c90a96575}</Implicit_Jitter_Distribution>
     <LibraryReferences>{bbaf044d-9a65-403c-9427-1f34f96172db}</LibraryReferences>
+    <Company>NM</Company>
+    <Released>true</Released>
+    <Title>Servo</Title>
+    <ProjectVersion>1.0.0.1</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Error\GVLs\Param_Error.TcGVL">
@@ -33,6 +37,18 @@
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project Information\F_GetCompany.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetTitle.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetVersion.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
     </Compile>
     <Compile Include="Servo\DUTs\E_ServoMotionType.TcDUT">
       <SubType>Code</SubType>
@@ -68,15 +84,20 @@
     <Compile Include="Servo\ITF_Servo.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Version\Global_Version.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Error" />
     <Folder Include="Error\GVLs" />
     <Folder Include="Error\POUs" />
+    <Folder Include="Project Information" />
     <Folder Include="Servo" />
     <Folder Include="PermIntlk" />
     <Folder Include="Servo\DUTs" />
     <Folder Include="Servo\GVLs" />
+    <Folder Include="Version" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>
