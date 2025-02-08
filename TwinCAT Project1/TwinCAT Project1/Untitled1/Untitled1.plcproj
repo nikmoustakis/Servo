@@ -19,19 +19,13 @@
     <Company>NM</Company>
     <Released>false</Released>
     <Title>Servo</Title>
-    <ProjectVersion>1.0.0.1</ProjectVersion>
+    <ProjectVersion>1.0.0.3</ProjectVersion>
+    <Description>- Error           1.0.0.5
+-JsonParser 1.0.0.1</Description>
+    <PreserveCompiledLibComments>true</PreserveCompiledLibComments>
+    <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Error\GVLs\Param_Error.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="Error\POUs\F_ClearError.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Error\POUs\F_ResetErrorList.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
@@ -89,12 +83,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Error" />
-    <Folder Include="Error\GVLs" />
-    <Folder Include="Error\POUs" />
     <Folder Include="Project Information" />
     <Folder Include="Servo" />
-    <Folder Include="PermIntlk" />
     <Folder Include="Servo\DUTs" />
     <Folder Include="Servo\GVLs" />
     <Folder Include="Version" />
@@ -112,6 +102,7 @@
     </PlaceholderReference>
     <PlaceholderReference Include="Servo">
       <DefaultResolution>Servo, * (NM)</DefaultResolution>
+      <Namespace>Servo</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_MC2">
       <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
@@ -145,7 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <PlaceholderResolution Include="Error">
-      <Resolution>Error, 1.0.0.4 (NM)</Resolution>
+      <Resolution>Error, 1.0.0.5 (NM)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="JsonParser">
       <Resolution>JsonParser, 1.0.0.1 (NM)</Resolution>

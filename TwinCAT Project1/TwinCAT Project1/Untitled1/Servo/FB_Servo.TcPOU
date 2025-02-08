@@ -75,8 +75,8 @@ VAR
 END_VAR
 
 VAR
-	ReadServoJsonState : (IDLE, READ_NC, WRITE_NC, WAIT, ERROR);
-	WriteServoJsonState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WRITE_FILE, WAIT, ERROR);
+	ReadServoJsonState : (IDLE, READ_NC, WRITE_NC, WAIT, IN_ERROR);
+	WriteServoJsonState : (IDLE, READ_NC, CALCULATE_NEW, WRITE_NC, WRITE_FILE, WAIT, IN_ERROR);
 	SetPosBias   : BOOL;
 	fbReadNC     : ADSREAD := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
 	fbWriteNC    : ADSWRITE := ( NETID := '', PORT := 501, TMOUT := DEFAULT_ADS_TIMEOUT );
@@ -142,7 +142,10 @@ END_VAR
       <Implementation>
         <ST><![CDATA[ReadStatus(Axis := Axis, Enable := TRUE);
 
-Status := ReadStatus.Status;]]></ST>
+Status := ReadStatus.Status;
+
+
+F_SetError(Error := Error,Label := TO_STRING(Axis.Status.ErrorID), Message := TO_STRING(Axis.Status.ErrorID), Priority := E_ErrorPriority.Critical);]]></ST>
       </Implementation>
     </Method>
     <Method Name="_M_AxisStop" Id="{d13ef632-250d-463c-8ea5-b48f2156dd0a}" FolderPath="private\Axis Commands\">
@@ -337,10 +340,10 @@ END_VAR]]></Declaration>
 			END_IF
 		END_IF	
 		IF fbWriteNC.ERR THEN 
-			ReadServoJsonState := ERROR;
+			ReadServoJsonState := IN_ERROR;
 		END_IF
 	
-	ERROR:
+	IN_ERROR:
 //		fbWriteNC.ERR := FALSE;
 //		fbReadNC.ERR := FALSE;
 		
@@ -373,7 +376,7 @@ END_CASE]]></ST>
 			END_IF
 		END_IF	
 		IF fbReadNC.ERR THEN 
-			WriteServoJsonState := ERROR;
+			WriteServoJsonState := IN_ERROR;
 		END_IF
 		
 	WRITE_NC:
@@ -389,7 +392,7 @@ END_CASE]]></ST>
 			END_IF
 		END_IF	
 		IF 	fbWriteNC.ERR THEN 
-			WriteServoJsonState := ERROR;
+			WriteServoJsonState := IN_ERROR;
 		END_IF
 	
 		
@@ -411,7 +414,7 @@ END_CASE]]></ST>
 		END_IF
 		
 		IF fb_WriteToFile.Er THEN 
-			WriteServoJsonState := ERROR;
+			WriteServoJsonState := IN_ERROR;
 		END_IF
 			
 		
@@ -428,10 +431,10 @@ END_CASE]]></ST>
 			END_IF
 		END_IF	
 		IF fbReadNC.ERR THEN 
-			WriteServoJsonState := ERROR;
+			WriteServoJsonState := IN_ERROR;
 		END_IF
 	
-	ERROR:
+	IN_ERROR:
 //		fbWriteNC.ERR := FALSE;
 //		fbReadNC.ERR := FALSE;
 		
@@ -453,7 +456,7 @@ END_IF
 
 Reset(Axis := Axis, Execute := Reset_Command);
 
-IF WriteServoJsonState = ERROR THEN
+IF WriteServoJsonState = IN_ERROR THEN
 	WriteServoJsonState := IDLE;
 
 END_IF
@@ -706,6 +709,19 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Property Name="P_Error" Id="{6797a0f8-1d70-46fb-9fc8-c30ad29d633b}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'suppress_wrn_C0410'}
+PROPERTY P_Error : REFERENCE TO ST_Error]]></Declaration>
+      <Get Name="Get" Id="{9a4d1632-d163-426f-b37c-87cfba8b742a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Error REF= Error;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="P_Interlock" Id="{b3fa0a65-d5ac-4046-8889-1c58225764a2}">
       <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
       <Get Name="Get" Id="{478cde43-792e-4109-8177-e24dafa2cddd}">
@@ -769,6 +785,9 @@ END_VAR
     <LineIds Name="FB_Servo._M_AxisStatus">
       <LineId Id="6" Count="1" />
       <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo._M_AxisStop">
       <LineId Id="10" Count="0" />
@@ -996,6 +1015,9 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_ControlMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Servo.P_Error.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Servo.P_Interlock.Get">
