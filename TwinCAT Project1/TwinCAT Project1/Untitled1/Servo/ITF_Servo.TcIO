@@ -102,13 +102,13 @@ END_VAR
     <Property Name="P_Error" Id="{3652eadd-1132-4b38-b876-f60bd21ff1ee}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
-PROPERTY P_Error : REFERENCE TO ST_Error]]></Declaration>
+PROPERTY P_Error : REFERENCE TO Error.ST_Error]]></Declaration>
       <Get Name="Get" Id="{41e909fb-4996-43de-9f44-22ebe912fe24}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
     <Property Name="P_Interlock" Id="{119e78ee-44f2-40f9-a099-d70ba6f76966}">
-      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
+      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO Servo.ST_ServoInterlocks]]></Declaration>
       <Get Name="Get" Id="{9098c892-eeba-4732-9c51-faa13b8e1889}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
@@ -116,7 +116,7 @@ PROPERTY P_Error : REFERENCE TO ST_Error]]></Declaration>
     <Property Name="P_JogCommand" Id="{1273a58f-2dc7-49b5-9bc7-d2673b6ff7e9}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
-PROPERTY P_JogCommand : REFERENCE TO ST_JogCommands]]></Declaration>
+PROPERTY P_JogCommand : REFERENCE TO Servo.ST_JogCommands]]></Declaration>
       <Get Name="Get" Id="{e7be9fd5-9f06-4e41-b17d-6b1d35c70798}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
@@ -124,7 +124,7 @@ PROPERTY P_JogCommand : REFERENCE TO ST_JogCommands]]></Declaration>
     <Property Name="P_ServoConfiguration" Id="{c9b4820d-12d6-4620-8f9f-a8fdff887ca3}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
-PROPERTY P_ServoConfiguration : REFERENCE TO ST_ServoConfiguration]]></Declaration>
+PROPERTY P_ServoConfiguration : REFERENCE TO Servo.ST_ServoConfiguration]]></Declaration>
       <Get Name="Get" Id="{75fd9b35-bc46-4fe7-a4bd-6325babebd0c}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

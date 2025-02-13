@@ -24,6 +24,7 @@
 -JsonParser 1.0.0.1</Description>
     <PreserveCompiledLibComments>true</PreserveCompiledLibComments>
     <CombineIds>true</CombineIds>
+    <DefaultNamespace>Servo</DefaultNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">
@@ -139,7 +140,7 @@
       <Resolution>Error, 1.0.0.5 (NM)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="JsonParser">
-      <Resolution>JsonParser, 1.0.0.1 (NM)</Resolution>
+      <Resolution>JsonParser, 1.0.0.2 (NM)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc2_Math">
       <Resolution>Tc2_Math, 3.3.1.0 (Beckhoff Automation GmbH)</Resolution>

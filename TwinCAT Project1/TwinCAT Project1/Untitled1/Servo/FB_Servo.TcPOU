@@ -21,17 +21,17 @@ VAR
 	mc_Jog             : MC_JOG;
 	mc_Home            : MC_HOME;
 
-	Error              : ST_Error;
+	Error              : Error.ST_Error;
 	
-	Inputs 		       : ST_Inputs;
-	ControlMode        : ST_ControlMode;
-    JogAxis            : ST_JogAxisMove;
-	JogCommand         : ST_JogCommands;
-	Interlock          : ST_ServoInterlocks;
-	ServoConfiguration : ST_ServoConfiguration;
+	Inputs 		       : Servo.ST_Inputs;
+	ControlMode        : Servo.ST_ControlMode;
+    JogAxis            : Servo.ST_JogAxisMove;
+	JogCommand         : Servo.ST_JogCommands;
+	Interlock          : Servo.ST_ServoInterlocks;
+	ServoConfiguration : Servo.ST_ServoConfiguration;
 	Status             : ST_AxisStatus;
 	HomingOptions      : ST_HomingOptions;  
-	ServoAxisMove      : ST_ServoAxisMove;
+	ServoAxisMove      : Servo.ST_ServoAxisMove;
 
 	//Slave          : REFERENCE TO AXIS_REF;
 
@@ -67,9 +67,9 @@ VAR
 	Init               : BOOL := TRUE;
 	
 	
-	fb_WriteJson       : FB_WriteJsonValues;
-	fb_ReadJson        : FB_ReadJsonValues;
-	fb_WriteToFile     : FB_WriteToFile;
+	fb_WriteJson       : jsonparser.FB_WriteJsonValues;
+	fb_ReadJson        : jsonparser.FB_ReadJsonValues;
+	fb_WriteToFile     : jsonparser.FB_WriteToFile;
 
 	Timeout : TON:=(PT := T#3S);
 END_VAR
@@ -698,7 +698,7 @@ END_VAR
     </Property>
     <Property Name="P_ControlMode" Id="{ca9803a6-de60-4a26-a9a4-ae4791f93c82}">
       <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY P_ControlMode : REFERENCE TO ST_ControlMode
+PROPERTY P_ControlMode : REFERENCE TO Servo.ST_ControlMode
 ]]></Declaration>
       <Get Name="Get" Id="{9d532be1-f6b9-44b0-a9ae-c4c5c2aba129}">
         <Declaration><![CDATA[VAR
@@ -712,7 +712,7 @@ END_VAR
     <Property Name="P_Error" Id="{6797a0f8-1d70-46fb-9fc8-c30ad29d633b}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
-PROPERTY P_Error : REFERENCE TO ST_Error]]></Declaration>
+PROPERTY P_Error : REFERENCE TO Error.ST_Error]]></Declaration>
       <Get Name="Get" Id="{9a4d1632-d163-426f-b37c-87cfba8b742a}">
         <Declaration><![CDATA[VAR
 END_VAR
@@ -723,7 +723,7 @@ END_VAR
       </Get>
     </Property>
     <Property Name="P_Interlock" Id="{b3fa0a65-d5ac-4046-8889-1c58225764a2}">
-      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO ST_ServoInterlocks]]></Declaration>
+      <Declaration><![CDATA[PROPERTY P_Interlock : REFERENCE TO Servo.ST_ServoInterlocks]]></Declaration>
       <Get Name="Get" Id="{478cde43-792e-4109-8177-e24dafa2cddd}">
         <Declaration><![CDATA[VAR
 END_VAR
@@ -734,7 +734,7 @@ END_VAR
       </Get>
     </Property>
     <Property Name="P_JogCommand" Id="{9c30aea2-d417-4439-84bf-f1380c1df15e}">
-      <Declaration><![CDATA[PROPERTY P_JogCommand : REFERENCE TO ST_JogCommands]]></Declaration>
+      <Declaration><![CDATA[PROPERTY P_JogCommand : REFERENCE TO Servo.ST_JogCommands]]></Declaration>
       <Get Name="Get" Id="{82140d78-cf74-4ea0-9cf8-d3fc335d3c13}">
         <Declaration><![CDATA[VAR
 END_VAR
@@ -747,7 +747,7 @@ END_VAR
     <Property Name="P_ServoConfiguration" Id="{89be2535-ea79-46a9-a08b-49598bb78a70}">
       <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
 {attribute 'suppress_wrn_C0410'}
-PROPERTY P_ServoConfiguration : REFERENCE TO ST_ServoConfiguration]]></Declaration>
+PROPERTY P_ServoConfiguration : REFERENCE TO Servo.ST_ServoConfiguration]]></Declaration>
       <Get Name="Get" Id="{922c2abd-c30f-4ea7-a3a2-cbf3c55919c4}">
         <Declaration><![CDATA[VAR
 END_VAR
