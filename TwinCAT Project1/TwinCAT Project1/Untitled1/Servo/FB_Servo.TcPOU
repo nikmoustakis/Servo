@@ -7,19 +7,19 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	Axis               : Axis_REF;
+	Axis               : tc2_mc2.Axis_REF;
 
-	Power         	   : MC_POWER;
-	MoveAbsolute  	   : MC_MoveAbsolute;
-	Move_Relative 	   : MC_MoveRelative;
-	MoveVelocity  	   : MC_MoveVelocity;
-	mc_MoveGearInDyn   : MC_GearInDyn;
-	mc_GearOut         : MC_GearOut;
-	Reset         	   : MC_Reset;
-	ReadStatus    	   : MC_READSTATUS;
-	Stop          	   : MC_STOP;
-	mc_Jog             : MC_JOG;
-	mc_Home            : MC_HOME;
+	Power         	   : tc2_mc2.MC_POWER;
+	MoveAbsolute  	   : tc2_mc2.MC_MoveAbsolute;
+	Move_Relative 	   : tc2_mc2.MC_MoveRelative;
+	MoveVelocity  	   : tc2_mc2.MC_MoveVelocity;
+	mc_MoveGearInDyn   : tc2_mc2.MC_GearInDyn;
+	mc_GearOut         : tc2_mc2.MC_GearOut;
+	Reset         	   : tc2_mc2.MC_Reset;
+	ReadStatus    	   : tc2_mc2.MC_READSTATUS;
+	Stop          	   : tc2_mc2.MC_STOP;
+	mc_Jog             : tc2_mc2.MC_JOG;
+	mc_Home            : tc2_mc2.MC_HOME;
 
 	Error              : Error.ST_Error;
 	
@@ -29,20 +29,20 @@ VAR
 	JogCommand         : Servo.ST_JogCommands;
 	Interlock          : Servo.ST_ServoInterlocks;
 	ServoConfiguration : Servo.ST_ServoConfiguration;
-	Status             : ST_AxisStatus;
-	HomingOptions      : ST_HomingOptions;  
+	Status             : tc2_mc2.ST_AxisStatus;
+	HomingOptions      : tc2_mc2.ST_HomingOptions;  
 	ServoAxisMove      : Servo.ST_ServoAxisMove;
 
 	//Slave          : REFERENCE TO AXIS_REF;
 
-	HomingMode         : MC_HomingMode;
+	HomingMode         : tc2_mc2.MC_HomingMode;
 	       
 	Position           : LREAL;
 	Velocity           : LREAL;
 	Acceleration       : LREAL;
 	Deceleration       : LREAL;
 	Jerk               : LREAL;
-	JogMode            : E_JogMode;
+	JogMode            : tc2_mc2.E_JogMode;
 	
     GearRatio          : LREAL;
    

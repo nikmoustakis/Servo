@@ -11,14 +11,14 @@ VAR_INPUT
     Deceleration : LREAL;
     Jerk     : LREAL;
 	
-	Slave : REFERENCE TO AXIS_REF;
+	Slave : REFERENCE TO tc2_mc2.AXIS_REF;
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_GearOut" Id="{9b235f47-b485-44d3-a063-8265da21287e}">
       <Declaration><![CDATA[METHOD M_GearOut : BOOL
 VAR_INPUT
-	Slave : REFERENCE TO AXIS_REF;
+	Slave : REFERENCE TO tc2_mc2.AXIS_REF;
 END_VAR
 ]]></Declaration>
     </Method>
@@ -26,8 +26,8 @@ END_VAR
       <Declaration><![CDATA[METHOD M_Home : BOOL
 VAR_INPUT
 	
-    Position        : LREAL         := DEFAULT_HOME_POSITION;
-    HomingMode      : MC_HomingMode;
+    Position        : LREAL         := tc2_mc2.DEFAULT_HOME_POSITION;
+    HomingMode      : tc2_mc2.MC_HomingMode;
     
    // Options         : ST_HomingOptions;
    
@@ -94,7 +94,7 @@ END_VAR
 ]]></Declaration>
     </Method>
     <Property Name="P_Axis" Id="{f48d8ef1-e81c-458b-ade5-e5f03cc5bb0c}">
-      <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO AXIS_REF]]></Declaration>
+      <Declaration><![CDATA[PROPERTY P_Axis : REFERENCE TO tc2_mc2.AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{359262dd-e211-447e-8d41-6132423bcc73}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
